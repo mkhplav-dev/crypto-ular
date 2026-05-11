@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Вход и регистрация в CryptoUlarbek" />
+        <title>Вход — CryptoUlarbek</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <style>
+            .auth-tabs {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 24px;
+                border-bottom: 1px solid var(--border);
+            }
+            .auth-tab {
+                flex: 1;
+                padding: 12px 20px;
+                background: transparent;
+                border: none;
+                color: var(--text-secondary);
+                font-size: 16px;
+                font-weight: 500;
+                cursor: pointer;
+                position: relative;
+                transition: color 0.2s;
+            }
+            .auth-tab.active {
+                color: var(--accent);
+            }
+            .auth-tab.active::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--accent);
+                border-radius: 2px 2px 0 0;
+            }
+            .auth-tab:hover {
+                color: var(--text-primary);
+            }
+            .auth-form-container {
+                display: none;
+            }
+            .auth-form-container.active {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .lang-selector {
+                display: flex;
+                background: var(--bg-glass);
+                border: 1px solid var(--border);
+                border-radius: 25px;
+                padding: 3px;
+                gap: 3px;
+            }
+
+            .lang-btn {
+                background: transparent;
+                border: none;
+                color: var(--text-secondary);
+                padding: 0.35rem 0;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 0.8rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                min-width: 40px;
+                text-align: center;
+            }
+
+            .lang-btn.active {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+            }
+
+            .btn--user {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border: none;
+                padding: 0.55rem;
+                border-radius: 12px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+
+            .btn--user:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="noise" aria-hidden="true"></div>
+        <div class="app">
+            <header class="header" id="header">
+                <div class="header__container">
+                    <a href="index.html" class="logo">
+                        <span class="logo__mark" aria-hidden="true"></span>
+                        <span class="logo__text">Crypto</span>
+                        <span class="logo__badge">Вход</span>
+                    </a>
+                    <div class="header__actions" style="max-width: none;">
+                        <div class="lang-selector">
+                            <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                            <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                            <button class="lang-btn" data-lang="ky" onclick="setLang('ky')">KY</button>
+                        </div>
+                        <a href="lichnyi.html" class="btn btn--icon btn--user" title="Личный кабинет">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </a>
+                        <a href="index.html" class="btn btn--ghost">На главную</a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main">
+                <section class="auth-section" aria-label="Авторизация">
+                    <div class="auth-card">
+                        <!-- Табы -->
+                        <div class="auth-tabs">
+                            <button type="button" class="auth-tab active" data-tab="login">Вход</button>
+                            <button type="button" class="auth-tab" data-tab="register">Регистрация</button>
+                        </div>
+
+                        <div id="authError" class="auth-error" style="display: none;"></div>
+
+                        <!-- Форма входа -->
+                        <div id="loginFormContainer" class="auth-form-container active">
+                            <form id="loginForm" class="auth-form">
+                                <label class="auth-label" for="loginEmailInput">Email</label>
+                                <input
+                                    id="loginEmailInput"
+                                    class="auth-input"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                    placeholder="you@example.com"
+                                />
+
+                                <label class="auth-label" for="loginPasswordInput">Пароль</label>
+                                <div class="auth-input-wrapper">
+                                    <input
+                                        id="loginPasswordInput"
+                                        class="auth-input"
+                                        type="password"
+                                        autocomplete="current-password"
+                                        required
+                                        placeholder="Ваш пароль"
+                                    />
+                                    <button type="button" class="auth-input-toggle" id="toggleLoginPassword" aria-label="Показать пароль">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="auth-checkbox-wrapper">
+                                    <label class="auth-checkbox-label">
+                                        <input type="checkbox" id="loginRememberMe" checked />
+                                        <span class="auth-checkbox"></span>
+                                        <span class="auth-checkbox-text">Запомнить меня</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn--primary auth-submit">Войти</button>
+                            </form>
+
+                            <div class="auth-divider">или</div>
+
+                            <div class="auth-oauth">
+                                <div id="googleSignInDiv"></div>
+                            </div>
+
+                            <p class="auth-bottom auth-bottom--muted">
+                                <a href="index.html">← Вернуться на главную</a>
+                            </p>
+                        </div>
+
+                        <!-- Форма регистрации -->
+                        <div id="registerFormContainer" class="auth-form-container">
+                            <form id="registerForm" class="auth-form">
+                                <label class="auth-label" for="regUsernameInput">Имя пользователя</label>
+                                <input
+                                    id="regUsernameInput"
+                                    class="auth-input"
+                                    type="text"
+                                    autocomplete="username"
+                                    required
+                                    minlength="3"
+                                    maxlength="30"
+                                    placeholder="Ваш никнейм"
+                                />
+
+                                <label class="auth-label" for="regEmailInput">Email</label>
+                                <input
+                                    id="regEmailInput"
+                                    class="auth-input"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                    placeholder="you@example.com"
+                                />
+
+                                <label class="auth-label" for="regPhoneInput">Телефон</label>
+                                <input
+                                    id="regPhoneInput"
+                                    class="auth-input"
+                                    type="tel"
+                                    autocomplete="tel"
+                                    placeholder="+7 (999) 999-99-99"
+                                />
+
+                                <label class="auth-label" for="regPasswordInput">Пароль</label>
+                                <div class="auth-input-wrapper">
+                                    <input
+                                        id="regPasswordInput"
+                                        class="auth-input"
+                                        type="password"
+                                        autocomplete="new-password"
+                                        required
+                                        minlength="6"
+                                        placeholder="Минимум 6 символов"
+                                    />
+                                    <button type="button" class="auth-input-toggle" id="toggleRegPassword" aria-label="Показать пароль">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <label class="auth-label" for="regConfirmInput">Подтвердите пароль</label>
+                                <div class="auth-input-wrapper">
+                                    <input
+                                        id="regConfirmInput"
+                                        class="auth-input"
+                                        type="password"
+                                        autocomplete="new-password"
+                                        required
+                                        placeholder="Повторите пароль"
+                                    />
+                                    <button type="button" class="auth-input-toggle" id="toggleRegConfirm" aria-label="Показать пароль">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="auth-checkbox-wrapper">
+                                    <label class="auth-checkbox-label">
+                                        <input type="checkbox" id="agreeTerms" required />
+                                        <span class="auth-checkbox"></span>
+                                        <span class="auth-checkbox-text">Я согласен с <a href="#" target="_blank">условиями</a></span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn--primary auth-submit">Создать аккаунт</button>
+                            </form>
+
+                            <div class="auth-divider">или</div>
+
+                            <div class="auth-oauth">
+                                <div id="googleSignUpDiv"></div>
+                            </div>
+
+                            <p class="auth-bottom auth-bottom--muted">
+                                <a href="index.html">← Вернуться на главную</a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script type="module" src="./auth.js"></script>
+        <script>
+            function setLang(lang) {
+                const l = ['ru', 'en', 'ky'].includes(lang) ? lang : 'ru';
+                localStorage.setItem('crypto-lang', l);
+                document.documentElement.lang = l;
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === l);
+                });
+            }
+            const savedLang = localStorage.getItem('crypto-lang') || 'ru';
+            setLang(savedLang);
+        </script>
+    </body>
+</html>

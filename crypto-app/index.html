@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CryptoUlarbek — интеллектуальная аналитика крипторынка: графики, прогнозы, избранное.">
+    <title>CryptoUlarbek — Аналитика криптовалют</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="pictures.png">
+    <link rel="shortcut icon" type="image/png" href="pictures.png">
+</head>
+<body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- Auth Modal Overlay -->
+    <div id="authModal" class="auth-modal" style="display: flex;">
+        <div class="auth-modal__backdrop"></div>
+        <div class="auth-modal__content">
+            <div class="auth-modal__header">
+                <h2 class="auth-modal__title">Добро пожаловать</h2>
+                <p class="auth-modal__subtitle">Войдите или зарегистрируйтесь для доступа к полному функционалу</p>
+            </div>
+            
+            <div id="authModalError" class="auth-error" style="display: none;"></div>
+            <div id="authModalSuccess" class="auth-success" style="display: none;"></div>
+            <div id="authModalConfirmation" class="auth-confirmation" style="display: none;">
+                <p id="authModalConfirmationText"></p>
+                <p id="authModalConfirmationHelp" class="auth-confirmation__help">Если письмо не пришло, проверьте папку «Спам» и подождите 30 секунд.</p>
+                <button type="button" id="authModalResendBtn" class="btn btn--secondary">Отправить снова</button>
+                <button type="button" id="authModalConfirmationBtn" class="btn btn--primary">Вернуться к входу</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="authModalLoginForm" class="auth-modal__form">
+                <input type="email" id="authModalEmail" class="auth-input" placeholder="Email" required autocomplete="email">
+                <div class="auth-input-wrapper">
+                    <input type="password" id="authModalPassword" class="auth-input" placeholder="Пароль" required autocomplete="current-password">
+                    <button type="button" class="auth-input-toggle" id="authModalTogglePassword" aria-label="Показать пароль">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn--primary auth-submit">Войти</button>
+            </form>
+            
+            <!-- Register Form (hidden by default) -->
+            <form id="authModalRegisterForm" class="auth-modal__form" style="display: none;">
+                <input type="text" id="authModalRegFirstName" class="auth-input" placeholder="Имя" required autocomplete="given-name">
+                <input type="text" id="authModalRegLastName" class="auth-input" placeholder="Фамилия" required autocomplete="family-name">
+                <input type="text" id="authModalRegUsername" class="auth-input" placeholder="Имя пользователя" required autocomplete="username">
+                <input type="email" id="authModalRegEmail" class="auth-input" placeholder="Email" required autocomplete="email">
+                <div class="auth-input-wrapper">
+                    <input type="password" id="authModalRegPassword" class="auth-input" placeholder="Пароль (мин. 6 символов)" required autocomplete="new-password">
+                    <button type="button" class="auth-input-toggle" id="authModalToggleRegPassword" aria-label="Показать пароль">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <div class="auth-input-wrapper">
+                    <input type="password" id="authModalRegConfirm" class="auth-input" placeholder="Подтвердите пароль" required autocomplete="new-password">
+                    <button type="button" class="auth-input-toggle" id="authModalToggleRegConfirm" aria-label="Показать пароль">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn--primary auth-submit">Зарегистрироваться</button>
+            </form>
+            
+            <div class="auth-divider">или</div>
+            
+            <div class="auth-oauth">
+                <button type="button" id="authModalGoogleBtn" class="btn btn--ghost auth-oauth-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Войти с Google
+                </button>
+            </div>
+            
+            <div class="auth-modal__toggle">
+                <span id="authModalToggleText">Нет аккаунта?</span>
+                <button type="button" id="authModalToggleBtn" class="auth-modal__link">Зарегистрироваться</button>
+            </div>
+            
+            <button type="button" id="authModalSkipBtn" class="auth-modal__skip">Пропустить →</button>
+        </div>
+    </div>
+
+    <div class="app">
+        
+        <header class="header" id="header">
+            <div class="header__container">
+                <a href="#" class="logo">
+                    <img src="pictures.png" alt="CryptoUlarbek" class="logo__mark logo__image" loading="lazy">
+                    <span class="logo__text">Crypto</span>
+                        <span class="logo__badge" data-i18n="brand_badge">Инсайты</span>
+                </a>
+                <nav class="nav" aria-label="Основное меню">
+                    <a href="#hero" class="nav__link" data-i18n="nav_overview"><span>Обзор</span></a>
+                    <a href="charts.html" class="nav__link" data-i18n="nav_charts"><span>Графики</span></a>
+                    <a href="portfolio.html" class="nav__link" data-i18n="nav_portfolio"><span>Портфель</span></a>
+                    <a href="#about" class="nav__link" data-i18n="nav_about"><span>О сайте</span></a>
+                    <a href="#faq" class="nav__link" data-i18n="nav_faq"><span>Справка</span></a>
+                </nav>
+                <div class="header__actions">
+                    <div class="search-box">
+                        <svg class="search-box__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" class="search-box__input" id="searchInput" placeholder="Поиск по названию или тикеру..." autocomplete="off">
+                    </div>
+                    <div class="header__btns">
+                        <button type="button" class="btn btn--icon" id="themeToggle" aria-label="Переключить тему">
+                            <svg class="theme-icon theme-icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <svg class="theme-icon theme-icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </button>
+                        <div class="lang-selector">
+                            <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                            <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                            <button class="lang-btn" data-lang="ky" onclick="setLang('ky')">KY</button>
+                        </div>
+                        <button type="button" class="btn btn--icon btn--fav" id="favoritesBtn" aria-label="Избранное">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                            <span class="favorites-count" id="favoritesCount">0</span>
+                        </button>
+                        <a href="lichnyi.html" class="btn btn--icon btn--user" id="profileBtn" aria-label="Личный кабинет" title="Личный кабинет">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </a>
+                        <button type="button" class="btn btn--ghost auth-header-btn" id="authBtn" aria-label="Вход">Войти</button>
+                        <button type="button" class="btn btn--ghost auth-header-btn" id="logoutBtn" aria-label="Выход" style="display: none;">Выйти</button>
+                        <span class="auth-header-user" id="userBadge" style="display: none;"></span>
+                        <div class="refresh-indicator" id="refreshIndicator" role="button" tabindex="0" title="Обновить данные">
+                            <span class="refresh-indicator__dot"></span>
+                            <span class="refresh-indicator__text">Синхронизация: 60с</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="header__burger" id="menuToggle" aria-label="Меню" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            
+            <section class="hero" id="hero">
+                <div class="hero__inner reveal">
+                    <p class="hero__eyebrow">
+                        <span class="hero__pulse"></span>
+                        <span data-i18n="hero_eyebrow">Данные уровня research · Binance + ForkLog + Локальные источники</span>
+                    </p>
+                    <h1 class="hero__title" data-i18n-html="hero_title">
+                        Крипто-аналитика <span class="hero__gradient" data-i18n="hero_title_gradient">для команд</span>
+                    </h1>
+                    <p class="hero__subtitle" data-i18n="hero_subtitle">
+                        Интерфейс в стиле ведущих crypto-платформ: чистая структура, market intelligence, real-time метрики и продвинутая аналитика.
+                    </p>
+                    <div class="hero__cta">
+                        <a href="charts.html" class="btn btn--primary" data-i18n="hero_cta_markets">Исследовать рынок</a>
+                        <a href="charts.html" class="btn btn--ghost" data-i18n="hero_cta_analytics">Открыть аналитику</a>
+                    </div>
+                    <div class="hero__meta">
+                        <div class="hero__chip">
+                            <span class="hero__chip-icon">⚡</span>
+                            <span class="hero__chip-text" data-i18n="hero_chip_live">Живые обновления</span>
+                        </div>
+                        <div class="hero__chip">
+                            <span class="hero__chip-icon">📊</span>
+                            <span class="hero__chip-text" data-i18n="hero_chip_chart">Chart.js</span>
+                        </div>
+                        <div class="hero__chip">
+                            <span class="hero__chip-icon">🔔</span>
+                            <span class="hero__chip-text" data-i18n="hero_chip_alerts">Алерты по цене</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about" id="about">
+                <div class="about__hero">
+                    <div class="about__badge reveal">
+                        <lord-icon src="https://cdn.lordicon.com/ujmqspux.json" trigger="loop" delay="1000" colors="primary:#6366f1,secondary:#8b5cf6" style="width:24px;height:24px"></lord-icon>
+                        <span data-i18n="about_badge">О проекте</span>
+                    </div>
+                    <h2 class="about__title reveal" data-glitch="CryptoUlarbek">CryptoUlarbek — один человек, одна идея</h2>
+                    <p class="about__subtitle reveal">Веб-инструмент для анализа крипторынка, созданный с нуля одним человеком. Без команды, без инвесторов — только чистая страсть к криптовалютам.</p>
+                </div>
+
+                <!-- Floating Cards Intro -->
+                <div class="about__content">
+                    <div class="about__story">
+                        <div class="about__card reveal about__card--intro">
+                            <div class="about__card-glow"></div>
+                            <div class="about__card-icon">
+                                <lord-icon src="https://cdn.lordicon.com/aktcknbh.json" trigger="hover" colors="primary:#00d4ff,secondary:#6366f1" style="width:48px;height:48px"></lord-icon>
+                            </div>
+                            <h3 class="about__card-title">Вступление</h3>
+                            <p class="about__card-text">
+                                Этот проект создан одним человеком с нуля, без команды и инвесторов. Идея появилась из простой мысли: криптовалюта слишком сложна для обычных людей. Большинство сервисов созданы для трейдеров, а не для простых пользователей.
+                            </p>
+                            <p class="about__card-text">
+                                Этот сайт — попытка изменить это. Сделать криптовалюту ближе и понятнее для каждого человека в Кыргызстане.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mission Cards -->
+                    <div class="about__mission-grid reveal">
+                        <h3 class="about__section-title">
+                            <lord-icon src="https://cdn.lordicon.com/mfmkurxf.json" trigger="hover" colors="primary:#10b981,secondary:#6366f1" style="width:32px;height:32px"></lord-icon>
+                            Наша миссия
+                        </h3>
+                        <div class="about__mission-cards">
+                            <div class="mission-card">
+                                <div class="mission-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/rvuqscmw.json" trigger="hover" colors="primary:#00d4ff" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <span>Быстро понять рынок</span>
+                            </div>
+                            <div class="mission-card">
+                                <div class="mission-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/surcxhka.json" trigger="hover" colors="primary:#8b5cf6" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <span>Актуальные данные</span>
+                            </div>
+                            <div class="mission-card">
+                                <div class="mission-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/tyntgkos.json" trigger="hover" colors="primary:#10b981" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <span>Простые инструменты</span>
+                            </div>
+                            <div class="mission-card">
+                                <div class="mission-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/yxczfiyc.json" trigger="hover" colors="primary:#f59e0b" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <span>Без сложных терминов</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problems Bento Grid -->
+                    <div class="about__problems-section reveal">
+                        <h3 class="about__section-title">
+                            <lord-icon src="https://cdn.lordicon.com/mjmrpujc.json" trigger="hover" colors="primary:#ef4444,secondary:#f59e0b" style="width:32px;height:32px"></lord-icon>
+                            Проблема, которую мы решаем
+                        </h3>
+                        <div class="about__bento">
+                            <div class="bento-card bento-card--large">
+                                <div class="bento-card__icon bento-card__icon--red">
+                                    <lord-icon src="https://cdn.lordicon.com/wsdobhst.json" trigger="hover" colors="primary:#ef4444" style="width:40px;height:40px"></lord-icon>
+                                </div>
+                                <h4>Сложные платформы</h4>
+                                <p>Перегружены функциями, которые не нужны обычным пользователям</p>
+                            </div>
+                            <div class="bento-card">
+                                <div class="bento-card__icon bento-card__icon--orange">
+                                    <lord-icon src="https://cdn.lordicon.com/lpddbrxy.json" trigger="hover" colors="primary:#f59e0b" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <h4>Только доллары</h4>
+                                <p>Нет пересчёта в сомах для Кыргызстана</p>
+                            </div>
+                            <div class="bento-card">
+                                <div class="bento-card__icon bento-card__icon--yellow">
+                                    <lord-icon src="https://cdn.lordicon.com/ayhtbrns.json" trigger="hover" colors="primary:#eab308" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <h4>Сложный язык</h4>
+                                <p>Не объясняют простым языком</p>
+                            </div>
+                            <div class="bento-card bento-card--wide">
+                                <div class="bento-card__icon bento-card__icon--purple">
+                                    <lord-icon src="https://cdn.lordicon.com/fwxgeqly.json" trigger="hover" colors="primary:#8b5cf6" style="width:36px;height:36px"></lord-icon>
+                                </div>
+                                <h4>Не для новичков</h4>
+                                <p>Рассчитаны на опытных трейдеров, а не на обычных людей</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features Orbit -->
+                    <div class="about__features-section reveal">
+                        <h3 class="about__section-title">
+                            <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover" colors="primary:#6366f1,secondary:#00d4ff" style="width:32px;height:32px"></lord-icon>
+                            Что есть на сайте
+                        </h3>
+                        <div class="about__orbit">
+                            <div class="orbit-card">
+                                <div class="orbit-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/utxgregt.json" trigger="hover" colors="primary:#00d4ff" style="width:40px;height:40px"></lord-icon>
+                                </div>
+                                <strong>Актуальные курсы</strong>
+                                <p>Отслеживайте криптовалюты в реальном времени</p>
+                            </div>
+                            <div class="orbit-card">
+                                <div class="orbit-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/lpddbrxy.json" trigger="hover" colors="primary:#10b981" style="width:40px;height:40px"></lord-icon>
+                                </div>
+                                <strong>Цены в сомах</strong>
+                                <p>Удобный пересчёт в локальную валюту</p>
+                            </div>
+                            <div class="orbit-card">
+                                <div class="orbit-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#8b5cf6" style="width:40px;height:40px"></lord-icon>
+                                </div>
+                                <strong>Графики и анализ</strong>
+                                <p>Анализируйте рынок с помощью графиков</p>
+                            </div>
+                            <div class="orbit-card">
+                                <div class="orbit-card__icon">
+                                    <lord-icon src="https://cdn.lordicon.com/pagmnafh.json" trigger="hover" colors="primary:#f59e0b" style="width:40px;height:40px"></lord-icon>
+                                </div>
+                                <strong>Портфель и алерты</strong>
+                                <p>Управляйте криптовалютным портфелем</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Principles Glow Cards -->
+                    <div class="about__principles-section reveal">
+                        <h3 class="about__section-title">
+                            <lord-icon src="https://cdn.lordicon.com/ujmqspux.json" trigger="hover" colors="primary:#ec4899,secondary:#8b5cf6" style="width:32px;height:32px"></lord-icon>
+                            Принципы работы
+                        </h3>
+                        <div class="about__glow-cards">
+                            <div class="glow-card">
+                                <div class="glow-card__border"></div>
+                                <div class="glow-card__content">
+                                    <div class="glow-card__number">01</div>
+                                    <h4>Честность</h4>
+                                    <p>Никаких скрытых комиссий и платежей. Всё прозрачно.</p>
+                                </div>
+                            </div>
+                            <div class="glow-card">
+                                <div class="glow-card__border"></div>
+                                <div class="glow-card__content">
+                                    <div class="glow-card__number">02</div>
+                                    <h4>Простота</h4>
+                                    <p>Интерфейс понятен даже тем, кто никогда не работал с криптовалютой.</p>
+                                </div>
+                            </div>
+                            <div class="glow-card">
+                                <div class="glow-card__border"></div>
+                                <div class="glow-card__content">
+                                    <div class="glow-card__number">03</div>
+                                    <h4>Скорость</h4>
+                                    <p>Быстрая загрузка данных без лишних ожиданий.</p>
+                                </div>
+                            </div>
+                            <div class="glow-card">
+                                <div class="glow-card__border"></div>
+                                <div class="glow-card__content">
+                                    <div class="glow-card__number">04</div>
+                                    <h4>Локальность</h4>
+                                    <p>Сделано для Кыргызстана с учётом местных реалий.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Animated Counter -->
+                    <div class="about__stats-section reveal">
+                        <div class="about__stat-item">
+                            <div class="about__stat-icon">
+                                <lord-icon src="https://cdn.lordicon.com/cxaodywp.json" trigger="loop" colors="primary:#00d4ff" style="width:48px;height:48px"></lord-icon>
+                            </div>
+                            <div class="about__stat-number" data-count="1">0</div>
+                            <div class="about__stat-label">Разработчик</div>
+                        </div>
+                        <div class="about__stat-item">
+                            <div class="about__stat-icon">
+                                <lord-icon src="https://cdn.lordicon.com/surcxhka.json" trigger="loop" colors="primary:#8b5cf6" style="width:48px;height:48px"></lord-icon>
+                            </div>
+                            <div class="about__stat-number" data-count="50">0</div>
+                            <div class="about__stat-label">Криптовалют</div>
+                        </div>
+                        <div class="about__stat-item">
+                            <div class="about__stat-icon">
+                                <lord-icon src="https://cdn.lordicon.com/tyntgkos.json" trigger="loop" colors="primary:#10b981" style="width:48px;height:48px"></lord-icon>
+                            </div>
+                            <div class="about__stat-number" data-count="100">0</div>
+                            <div class="about__stat-label">% Страсть</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="about__cta reveal">
+                        <div class="about__cta-glow"></div>
+                        <h3>Начните прямо сейчас</h3>
+                        <p>Без регистрации и сложных настроек. Просто откройте и используйте.</p>
+                        <a href="charts.html" class="about__cta-btn">
+                            <lord-icon src="https://cdn.lordicon.com/rvuqscmw.json" trigger="hover" colors="primary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                            Открыть графики
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual Divider Section -->
+            <section class="visual-divider" style="padding: 80px 20px; background: linear-gradient(135deg, rgba(90, 103, 255, 0.08) 0%, rgba(61, 213, 243, 0.08) 100%); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -50%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(90, 103, 255, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                <div style="position: absolute; bottom: -30%; left: -5%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(61, 213, 243, 0.12) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                
+                <div style="max-width: 1320px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="background: linear-gradient(135deg, rgba(90, 103, 255, 0.2) 0%, rgba(61, 213, 243, 0.1) 100%); border-radius: 20px; padding: 32px; backdrop-filter: blur(8px); border: 1px solid rgba(90, 103, 255, 0.2);">
+                        <div style="font-size: 28px; margin-bottom: 12px;">⚙️</div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Автоматизация</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">Отслеживайте рынок 24/7 с умными алертами</p>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(61, 213, 243, 0.2) 0%, rgba(124, 58, 237, 0.1) 100%); border-radius: 20px; padding: 32px; backdrop-filter: blur(8px); border: 1px solid rgba(61, 213, 243, 0.2);">
+                        <div style="font-size: 28px; margin-bottom: 12px;">📈</div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Аналитика</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">Глубокие инсайты с историческими данными</p>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(90, 103, 255, 0.1) 100%); border-radius: 20px; padding: 32px; backdrop-filter: blur(8px); border: 1px solid rgba(124, 58, 237, 0.2);">
+                        <div style="font-size: 28px; margin-bottom: 12px;">🔐</div>
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Безопасность</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">Защищённые данные с шифрованием</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live ticker -->
+            <div class="ticker-wrap" aria-label="Лента котировок">
+                <div class="ticker" id="tickerTrack">
+                    <span class="ticker__item">Загрузка котировок…</span>
+                </div>
+            </div>
+
+            <!-- Global stats -->
+            <section class="stats-grid" aria-label="Глобальная статистика">
+                <article class="stat-card stat-card--accent reveal">
+                    <div class="stat-card__icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <span class="stat-card__label">Капитализация рынка</span>
+                    <span class="stat-card__value" id="totalMarketCap" data-target="0">—</span>
+                    <span class="stat-card__hint" id="marketCapChange">—</span>
+                </article>
+                <article class="stat-card reveal">
+                    <div class="stat-card__icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 4 6-6"/></svg>
+                    </div>
+                    <span class="stat-card__label">Объём за 24ч</span>
+                    <span class="stat-card__value" id="totalVolume" data-target="0">—</span>
+                    <span class="stat-card__hint">Глобальный оборот</span>
+                </article>
+                <article class="stat-card reveal">
+                    <div class="stat-card__icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <span class="stat-card__label">Доминирование BTC</span>
+                    <span class="stat-card__value" id="btcDominance">—</span>
+                    <span class="stat-card__hint">Доля Bitcoin</span>
+                </article>
+                <article class="stat-card reveal">
+                    <div class="stat-card__icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <span class="stat-card__label">Доминирование ETH</span>
+                    <span class="stat-card__value" id="ethDominance">—</span>
+                    <span class="stat-card__hint">Доля Ethereum</span>
+                </article>
+            </section>
+
+            <!-- Movers -->
+            <section class="movers" aria-label="Лидеры движения">
+                <div class="movers__col reveal">
+                    <div class="movers__head movers__head--up">
+                        <span class="movers__title">Топ роста 24ч</span>
+                    </div>
+                    <ul class="movers__list" id="topGainers"></ul>
+                </div>
+                <div class="movers__col reveal">
+                    <div class="movers__head movers__head--down">
+                        <span class="movers__title">Топ падения 24ч</span>
+                    </div>
+                    <ul class="movers__list" id="topLosers"></ul>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="features" id="features">
+                <div class="section-head section-head--center reveal">
+                    <p class="section-head__eyebrow" data-i18n="features_eyebrow">Сделано как настоящий продукт</p>
+                    <h2 class="section-head__title">Архитектура продукта</h2>
+                    <p class="section-head__desc">Модульный код, разделение API / UI / прогнозирование, устойчивость к ошибкам сети.</p>
+                </div>
+                <div class="features__grid">
+                    <article class="feature-card reveal">
+                        <span class="feature-card__num">01</span>
+                        <h3 class="feature-card__title" data-i18n="feature_api_title">Живой Market API</h3>
+                        <p class="feature-card__text">Данные Binance, ForkLog и локальных крипто-сайтов с периодическим обновлением и обработкой сбоев.</p>
+                    </article>
+                    <article class="feature-card reveal">
+                        <span class="feature-card__num">02</span>
+                        <h3 class="feature-card__title" data-i18n="feature_models_title">Прогностические модели</h3>
+                        <p class="feature-card__text">Скользящее среднее и линейная регрессия визуализируются отдельной линией.</p>
+                    </article>
+                    <article class="feature-card reveal">
+                        <span class="feature-card__num">03</span>
+                        <h3 class="feature-card__title" data-i18n="feature_terminal_title">UX уровня терминала</h3>
+                        <p class="feature-card__text">Избранное, темы, поиск, сортировка, алерты и адаптивная вёрстка.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="faq" id="faq">
+                <div class="section-head section-head--center reveal">
+                    <p class="section-head__eyebrow">Справка</p>
+                    <h2 class="section-head__title">Частые вопросы</h2>
+                </div>
+                <div class="faq__list">
+                    <details class="faq__item reveal">
+                        <summary>Откуда берутся цены?</summary>
+                        <p>Используются публичные API Binance (основной источник), данные из ForkLog и локальных крипто-сайтов (netex.kg, xbt.kg). Данные обновляются автоматически каждые 60 секунд.</p>
+                    </details>
+                    <details class="faq__item reveal">
+                        <summary>Насколько точен прогноз?</summary>
+                        <p>Линия прогноза построена на методах MA и линейной регрессии и не является инвестиционной рекомендацией.</p>
+                    </details>
+                    <details class="faq__item reveal">
+                        <summary>Где хранится избранное?</summary>
+                        <p>Список избранных монет сохраняется локально в браузере (localStorage), без сервера.</p>
+                    </details>
+                </div>
+            </section>
+        </main>
+
+        <button type="button" class="back-top" id="backTop" aria-label="Наверх">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+
+        <div class="notifications" id="notifications"></div>
+
+        <footer class="footer">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <span class="logo__text footer__logo">CryptoUlarbek</span>
+                
+                </div>
+                <div class="footer__links">
+                    <span class="footer__label">Разделы</span>
+                    <a href="charts.html">Аналитика</a>
+                    <a href="charts.html">Рынок</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="footer__links">
+                    <span class="footer__label">Источники</span>
+                    <a href="https://www.binance.com/" target="_blank" rel="noopener">Binance API</a>
+                    <a href="https://forklog.com/" target="_blank" rel="noopener">ForkLog</a>
+                    <a href="https://netex.kg/ru/main/home" target="_blank" rel="noopener">netex.kg</a>
+                    <a href="https://xbt.kg/" target="_blank" rel="noopener">xbt.kg</a>
+                    <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© <span id="year"></span> CryptoUlarbek.</p>
+                <p>Последнее обновление данных: <span id="lastUpdate">—</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script type="module" src="./auth-index.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Animated Counter for About Section -->
+    <script>
+        // Animated counter
+        const animateCounter = (el, target, duration = 2000) => {
+            let start = 0;
+            const step = timestamp => {
+                if (!start) start = timestamp;
+                const progress = Math.min((timestamp - start) / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(easeOut * target);
+                if (progress < 1) requestAnimationFrame(step);
+                else el.textContent = target;
+            };
+            requestAnimationFrame(step);
+        };
+
+        // Intersection Observer for counters
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                    entry.target.classList.add('counted');
+                    const target = parseInt(entry.target.dataset.count);
+                    animateCounter(entry.target, target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Observe all counter elements
+        document.querySelectorAll('.about__stat-number').forEach(el => counterObserver.observe(el));
+    </script>
+</body>
+</html>

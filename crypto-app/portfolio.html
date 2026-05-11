@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoUlarbek Portfolio Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .portfolio-hero {
+            padding: 100px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 24px;
+        }
+        .portfolio-hero__inner {
+            display: grid;
+            gap: 18px;
+        }
+        .portfolio-hero h1 {
+            font-size: clamp(2.4rem, 4vw, 3.6rem);
+            line-height: 1.05;
+            max-width: 860px;
+            color: var(--text-primary);
+        }
+        .portfolio-hero p {
+            max-width: 740px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+        .portfolio-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.9fr;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+        .portfolio-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 24px;
+            position: relative;
+        }
+        .portfolio-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+        .portfolio-card-header h2 {
+            font-size: 1.25rem;
+            margin: 0;
+            color: var(--text-primary);
+        }
+        .portfolio-card-header p {
+            margin: 0;
+            color: var(--text-secondary);
+            max-width: 460px;
+        }
+        .portfolio-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .portfolio-metric {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+        .portfolio-metric strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .portfolio-metric span {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .portfolio-form {
+            display: grid;
+            gap: 16px;
+        }
+        .portfolio-form label {
+            display: grid;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .portfolio-form input,
+        .portfolio-form select {
+            width: 100%;
+            min-height: 48px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 14px;
+            font-family: var(--font-sans);
+        }
+        .portfolio-form button {
+            width: 100%;
+        }
+        .portfolio-grid--wide {
+            grid-template-columns: 1fr;
+        }
+        .portfolio-results {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+        .portfolio-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .portfolio-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+        }
+        .portfolio-box strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .portfolio-box p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .portfolio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+        }
+        .portfolio-table th,
+        .portfolio-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        .portfolio-table th {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .portfolio-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            background: rgba(90,103,255,0.12);
+            color: var(--accent);
+        }
+        .portfolio-alert {
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.22);
+            color: var(--red);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            font-size: 0.95rem;
+        }
+        .portfolio-grid-small {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+        .portfolio-input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .portfolio-output {
+            display: grid;
+            gap: 12px;
+        }
+        .portfolio-output strong {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        .portfolio-output p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+        .portfolio-footer {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        @media (max-width: 1000px) {
+            .portfolio-grid,
+            .portfolio-grid-small,
+            .portfolio-stats,
+            .portfolio-results {
+                grid-template-columns: 1fr;
+            }
+            .nav {
+                display: none;
+            }
+            .header__actions {
+                max-width: none;
+                flex-wrap: nowrap;
+            }
+        }
+        @media (max-width: 640px) {
+            .portfolio-form {
+                gap: 12px;
+            }
+            .lang-selector {
+                order: -1;
+            }
+            .lang-btn {
+                min-width: 32px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Header Actions */
+        .header__actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            justify-content: flex-end;
+            max-width: 720px;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+
+        /* User button */
+        .btn--user {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 0.55rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn--user:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Nav - Prevent layout shift */
+        .nav {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(90px, auto);
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav__link {
+            min-width: 90px;
+            max-width: 110px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .nav__link span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Language Selector & Theme Toggle */
+        .lang-selector {
+            display: flex;
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 3px;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.35rem 0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+        .btn--ghost {
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn--ghost:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-hover);
+        }
+
+        /* Card Animations */
+        .portfolio-card {
+            animation: slideInUp 0.6s ease-out backwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .portfolio-card:nth-child(1) { animation-delay: 0.1s; }
+        .portfolio-card:nth-child(2) { animation-delay: 0.2s; }
+        .portfolio-card:nth-child(3) { animation-delay: 0.3s; }
+        .portfolio-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero Animations */
+        .portfolio-hero {
+            animation: fadeIn 0.8s ease-out;
+        }
+        .portfolio-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+        @keyframes pulseBadge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { box-shadow: 0 0 15px 3px rgba(16, 185, 129, 0.2); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Button hover effects */
+        .btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn:hover::before {
+            left: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="app">
+    <div class="noise"></div>
+    <header class="header">
+        <div class="header__container">
+            <a href="index.html" class="logo">
+                <span class="logo__mark"></span>
+                <span>CryptoUlarbek</span>
+                <span class="logo__badge" data-i18n="nav_portfolio">Portfolio</span>
+            </a>
+            <nav class="nav" aria-label="Основное меню">
+                <a href="index.html" class="nav__link" data-i18n="nav_home"><span>Главная</span></a>
+                <a href="charts.html" class="nav__link" data-i18n="nav_charts"><span>Графики</span></a>
+                <a href="portfolio.html" class="nav__link active" data-i18n="nav_portfolio"><span>Портфель</span></a>
+            </nav>
+            <div class="header__actions">
+                <div class="lang-selector">
+                    <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                    <button class="lang-btn" data-lang="ky" onclick="setLang('ky')">KY</button>
+                </div>
+                <button class="btn btn--ghost" id="themeToggle" onclick="toggleTheme()" title="Переключить тему">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a href="lichnyi.html" class="btn btn--icon btn--user" title="Личный кабинет">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="portfolio-hero">
+        <div class="portfolio-hero__inner">
+            <span class="portfolio-chip">Кыргызстан</span>
+            <h1 data-i18n="portfolio_title">Портфель для Кыргызстана: торговый симулятор на сомах и реальный финансовый навык.</h1>
+            <p data-i18n="portfolio_subtitle">Торгуй виртуальными сомами, считай риск, прибыль и ошибки. Всё работает на локальном уровне, чтобы новичок из KG быстро учился управлять активами и смотрел, как растёт его портфель.</p>
+            <div class="portfolio-actions">
+                <a href="#simulator" class="btn btn--primary" data-i18n="start_simulator">Запустить симулятор</a>
+                <a href="#profit-calculator" class="btn btn--ghost" data-i18n="learn_more">Калькулятор прибыли</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="portfolio-grid">
+        <section class="portfolio-card" id="simulator">
+            <div class="portfolio-card-header">
+                <div>
+                    <h2 data-i18n="simulator_title">Trading Simulator</h2>
+                    <p data-i18n="simulator_desc">Главная часть портфеля: торгуй, анализируй, смотри прибыль/убыток и тренируй риск-менеджмент.</p>
+                </div>
+                <span class="portfolio-chip">Виртуально</span>
+            </div>
+
+            <div class="portfolio-summary">
+                <div class="portfolio-metric">
+                    <strong id="balanceValue">300 000 сом</strong>
+                    <span>Виртуальный баланс</span>
+                </div>
+                <div class="portfolio-metric">
+                    <strong id="profitValue">0 сом</strong>
+                    <span>Общая прибыль / убыток</span>
+                </div>
+                <div class="portfolio-metric">
+                    <strong id="winRateValue">0%</strong>
+                    <span>Win rate</span>
+                </div>
+                <div class="portfolio-metric">
+                    <strong id="riskValue">0%</strong>
+                    <span>Средний риск</span>
+                </div>
+            </div>
+
+            <form class="portfolio-form" id="tradeForm">
+                <div class="portfolio-input-row">
+                    <label>
+                        Монета
+                        <select id="tradeCoin"></select>
+                    </label>
+                    <label>
+                        Тип позиции
+                        <select id="tradeType">
+                            <option value="long">Покупка (Long)</option>
+                            <option value="short">Продажа (Short)</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="portfolio-input-row">
+                    <label>
+                        Сумма в сомах
+                        <input type="number" id="tradeAmount" placeholder="Например 50000" min="1000" step="1000">
+                    </label>
+                    <label>
+                        Текущая цена (USD)
+                        <input type="text" id="tradePrice" readonly>
+                    </label>
+                </div>
+                <div class="portfolio-input-row">
+                    <label>
+                        Цена входа (USD)
+                        <input type="number" id="tradeEntry" placeholder="Цена входа" min="0.01" step="0.01">
+                    </label>
+                    <label>
+                        Цена выхода (USD)
+                        <input type="number" id="tradeExit" placeholder="Цена выхода" min="0.01" step="0.01">
+                    </label>
+                </div>
+                <label>
+                    Защита стоп‑лосс (% от позиции)
+                    <input type="number" id="tradeRisk" placeholder="Например 3" min="0.5" step="0.5">
+                </label>
+                <button type="submit" class="btn btn--primary">Добавить сделку</button>
+                <div id="tradeError" class="portfolio-alert" style="display:none;"></div>
+            </form>
+
+            <div class="portfolio-results">
+                <div class="portfolio-box">
+                    <strong>AI-анализ сделки</strong>
+                    <p id="aiMessage">Здесь появится анализ вашей позиции и рекомендации, как торговать безопаснее.</p>
+                </div>
+                <div class="portfolio-box">
+                    <strong>Последняя ошибка</strong>
+                    <p id="lastError">Пока ошибок нет. Первая сделка может показать, где вы рискуете слишком сильно.</p>
+                </div>
+            </div>
+
+            <div class="portfolio-box" style="margin-top:20px;">
+                <strong>История сделок</strong>
+                <table class="portfolio-table" id="tradeHistory">
+                    <thead>
+                        <tr>
+                            <th>Монета</th>
+                            <th>Тип</th>
+                            <th>Сумма</th>
+                            <th>ROI</th>
+                            <th>Профит</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside>
+            <div class="portfolio-card">
+                <div class="portfolio-card-header">
+                    <div>
+                        <h2>Польза для KG</h2>
+                        <p>Торговые знания на сомах. Учись правильно считать риск на каждой сделке и видеть реальные цифры, которые помогут принимать решения в Бишкеке и по всей стране.</p>
+                    </div>
+                </div>
+                <div class="portfolio-box">
+                    <strong>Локальная валюта</strong>
+                    <p>Все расчёты ведутся в сомах — так легче понять, сколько рискуешь и сколько зарабатываешь на рынке.</p>
+                </div>
+                <div class="portfolio-box">
+                    <strong>Обучение через ошибки</strong>
+                    <p>Если сделка слишком поздняя или риск велик, система покажет это заметно.</p>
+                </div>
+                <div class="portfolio-box">
+                    <strong>AI-подсказки</strong>
+                    <p>Простые рекомендации: вход, риск, динамика. Система подскажет, когда ты слишком поздно вошёл и как сделать следующую сделку лучше.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <section class="portfolio-footer">
+        <div class="portfolio-grid-small">
+            <div class="portfolio-card" id="profit-calculator">
+                <div class="portfolio-card-header">
+                    <div>
+                        <h2>Profit Calculator</h2>
+                        <p>Введи монету, сумму, вход и выход — получи прибыль, ROI и процент.</p>
+                    </div>
+                </div>
+                <div class="portfolio-form">
+                    <label>
+                        Монета
+                        <select id="profitCoin"></select>
+                    </label>
+                    <label>
+                        Сумма (сом)
+                        <input type="number" id="profitAmount" placeholder="Например 50000" min="1000" step="1000">
+                    </label>
+                    <div class="portfolio-input-row">
+                        <label>
+                            Цена входа (USD)
+                            <input type="number" id="profitEntry" min="0.01" step="0.01">
+                        </label>
+                        <label>
+                            Цена выхода (USD)
+                            <input type="number" id="profitExit" min="0.01" step="0.01">
+                        </label>
+                    </div>
+                    <button type="button" id="profitCalcBtn" class="btn btn--primary">Рассчитать прибыль</button>
+                </div>
+                <div class="portfolio-output" id="profitResult"></div>
+            </div>
+
+            <div class="portfolio-card">
+                <div class="portfolio-card-header">
+                    <div>
+                        <h2>DCA Calculator</h2>
+                        <p>Накопление по средней цене — важный инструмент для новичка.</p>
+                    </div>
+                </div>
+                <div class="portfolio-form">
+                    <label>
+                        Монета
+                        <select id="dcaCoin"></select>
+                    </label>
+                    <label>
+                        Вклад в сомах/месяц
+                        <input type="number" id="dcaAmount" min="1000" step="1000">
+                    </label>
+                    <div class="portfolio-input-row">
+                        <label>
+                            Период (месяцев)
+                            <input type="number" id="dcaMonths" min="1" max="60" step="1">
+                        </label>
+                        <label>
+                            Цель, % роста
+                            <input type="number" id="dcaTarget" min="5" max="200" step="5" value="25">
+                        </label>
+                    </div>
+                    <button type="button" id="dcaCalcBtn" class="btn btn--primary">Рассчитать DCA</button>
+                </div>
+                <div class="portfolio-output" id="dcaResult"></div>
+            </div>
+
+            <div class="portfolio-card">
+                <div class="portfolio-card-header">
+                    <div>
+                        <h2>Mining Calculator</h2>
+                        <p>Полезно для Кыргызстана — оцени прибыльность добычи в сомах.</p>
+                    </div>
+                </div>
+                <div class="portfolio-form">
+                    <label>
+                        Электричество (сом / кВт·ч)
+                        <input type="number" id="minePowerCost" min="1" step="0.1" value="8.5">
+                    </label>
+                    <label>
+                        Цена GPU (сом)
+                        <input type="number" id="gpuCost" min="10000" step="1000" value="2000000">
+                    </label>
+                    <div class="portfolio-input-row">
+                        <label>
+                            Мощность GPU (Вт)
+                            <input type="number" id="gpuWatts" min="50" step="10" value="250">
+                        </label>
+                        <label>
+                            Хешрейт (MH/s)
+                            <input type="number" id="gpuHash" min="1" step="1" value="45">
+                        </label>
+                    </div>
+                    <button type="button" id="mineCalcBtn" class="btn btn--primary">Рассчитать майнинг</button>
+                </div>
+                <div class="portfolio-output" id="mineResult"></div>
+            </div>
+
+            <div class="portfolio-card">
+                <div class="portfolio-card-header">
+                    <div>
+                        <h2>Risk Calculator</h2>
+                        <p>Размер позиции и безопасный риск на одну сделку.</p>
+                    </div>
+                </div>
+                <div class="portfolio-form">
+                    <label>
+                        Баланс (сом)
+                        <input type="number" id="riskBalance" min="1000" step="1000" value="300000">
+                    </label>
+                    <label>
+                        Риск (%)
+                        <input type="number" id="riskPercent" min="0.5" max="20" step="0.5" value="2">
+                    </label>
+                    <label>
+                        Stop Loss (%)
+                        <input type="number" id="riskStop" min="0.5" max="20" step="0.5" value="3">
+                    </label>
+                    <button type="button" id="riskCalcBtn" class="btn btn--primary">Рассчитать риск</button>
+                </div>
+                <div class="portfolio-output" id="riskResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const USD_TO_KGS = 84;
+        const COINS = [
+            { symbol: 'BTC', name: 'Bitcoin', price: 56000 },
+            { symbol: 'ETH', name: 'Ethereum', price: 3350 },
+            { symbol: 'BNB', name: 'BNB', price: 420 },
+            { symbol: 'SOL', name: 'Solana', price: 190 },
+            { symbol: 'ADA', name: 'Cardano', price: 0.39 },
+            { symbol: 'DOGE', name: 'Dogecoin', price: 0.11 }
+        ];
+
+        const portfolio = JSON.parse(localStorage.getItem('crypto-portfolio-hub')) || {
+            balance: 300000,
+            profit: 0,
+            trades: [],
+            lastError: 'Пока ошибок нет. Первая сделка покажет, где улучшить стратегию.',
+            aiMessage: 'Сделок ещё нет. Начни с малого и анализируй каждую позицию.'
+        };
+
+        function formatSom(value = 0) {
+            return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'KGS', maximumFractionDigits: 0 }).format(value).replace('KGS', 'сом');
+        }
+
+        function formatUsd(value = 0) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
+        }
+
+        function renderCoinOptions() {
+            const selects = [
+                document.getElementById('tradeCoin'),
+                document.getElementById('profitCoin'),
+                document.getElementById('dcaCoin')
+            ];
+            selects.forEach(select => {
+                select.innerHTML = COINS.map(coin => `<option value="${coin.symbol}">${coin.symbol} — ${coin.name}</option>`).join('');
+            });
+            updateTradePrice();
+        }
+
+        function updatePortfolioStats() {
+            const wins = portfolio.trades.filter(t => t.profitSom >= 0).length;
+            const total = portfolio.trades.length;
+            const winRate = total ? Math.round((wins / total) * 100) : 0;
+            const avgRisk = total ? Math.round(portfolio.trades.reduce((sum, t) => sum + t.riskPercent, 0) / total) : 0;
+            const totalProfit = portfolio.trades.reduce((sum, t) => sum + t.profitSom, 0);
+
+            document.getElementById('balanceValue').textContent = formatSom(portfolio.balance);
+            document.getElementById('profitValue').textContent = formatSom(totalProfit);
+            document.getElementById('winRateValue').textContent = `${winRate}%`;
+            document.getElementById('riskValue').textContent = `${avgRisk}%`;
+            document.getElementById('aiMessage').textContent = portfolio.aiMessage;
+            document.getElementById('lastError').textContent = portfolio.lastError;
+            renderTradeHistory();
+        }
+
+        function renderTradeHistory() {
+            const tbody = document.querySelector('#tradeHistory tbody');
+            tbody.innerHTML = portfolio.trades.map(trade => `
+                <tr>
+                    <td>${trade.coin}</td>
+                    <td>${trade.type === 'long' ? 'Long' : 'Short'}</td>
+                    <td>${formatSom(trade.amountSom)} / ${formatUsd(trade.entryPrice)}</td>
+                    <td style="color:${trade.profitSom >= 0 ? 'var(--green)' : 'var(--red)'}">${trade.roi.toFixed(1)}%</td>
+                    <td style="color:${trade.profitSom >= 0 ? 'var(--green)' : 'var(--red)'}">${formatSom(trade.profitSom)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function savePortfolio() {
+            localStorage.setItem('crypto-portfolio-hub', JSON.stringify(portfolio));
+        }
+
+        function showError(message) {
+            const errorBox = document.getElementById('tradeError');
+            errorBox.textContent = message;
+            errorBox.style.display = 'block';
+            portfolio.lastError = message;
+            savePortfolio();
+            updatePortfolioStats();
+        }
+
+        function clearError() {
+            const errorBox = document.getElementById('tradeError');
+            errorBox.style.display = 'none';
+            errorBox.textContent = '';
+        }
+
+        function getSelectedCoin(symbol) {
+            return COINS.find(coin => coin.symbol === symbol) || COINS[0];
+        }
+
+        function updateTradePrice() {
+            const symbol = document.getElementById('tradeCoin').value;
+            const coin = getSelectedCoin(symbol);
+            document.getElementById('tradePrice').value = formatUsd(coin.price);
+        }
+
+        function getAiMessage(trade) {
+            if (trade.riskPercent > 30) {
+                return 'Риск слишком высок. Для стабильного роста не рискуй больше 20% баланса в одной сделке.';
+            }
+            if (trade.profitSom < 0 && trade.entryPrice > trade.currentPrice * 1.02) {
+                return 'Ты слишком поздно вошел в позицию. Ищи лучшие уровни входа и сокращай убытки.';
+            }
+            if (trade.profitSom < 0) {
+                return 'Убыток есть — это урок. Снизь стоп‑лосс и не держи позицию слишком долго.';
+            }
+            if (trade.profitSom >= 0 && trade.roi > 10) {
+                return 'Отлично, ты поймал движение и закрыл прибыльную позицию. Продолжай контролировать риск.';
+            }
+            return 'Сделка закрыта. Анализируй вход и выход, чтобы следующий результат был ещё лучше.';
+        }
+
+        function handleTradeSubmit(event) {
+            event.preventDefault();
+            clearError();
+
+            const coinSymbol = document.getElementById('tradeCoin').value;
+            const amountSom = Number(document.getElementById('tradeAmount').value);
+            const entryPrice = Number(document.getElementById('tradeEntry').value);
+            const exitPrice = Number(document.getElementById('tradeExit').value);
+            const tradeType = document.getElementById('tradeType').value;
+            const riskPercent = Number(document.getElementById('tradeRisk').value);
+            const coin = getSelectedCoin(coinSymbol);
+            const currentPrice = coin.price;
+
+            if (!coinSymbol || !amountSom || !entryPrice || !exitPrice) {
+                return showError('Заполни все поля: монету, сумму, вход и выход.');
+            }
+            if (amountSom <= 0 || amountSom > portfolio.balance) {
+                return showError('Недостаточно средств или неверная сумма.');
+            }
+            if (riskPercent <= 0) {
+                return showError('Укажи корректный процент риска.');
+            }
+
+            const qty = amountSom / (entryPrice * USD_TO_KGS);
+            const profitUsd = tradeType === 'long'
+                ? qty * (exitPrice - entryPrice)
+                : qty * (entryPrice - exitPrice);
+            const profitSom = profitUsd * USD_TO_KGS;
+            const roi = amountSom ? (profitSom / amountSom) * 100 : 0;
+            const riskUsed = amountSom / portfolio.balance * 100;
+
+            portfolio.balance = Math.round(portfolio.balance + profitSom);
+            portfolio.trades.unshift({
+                coin: coinSymbol,
+                type: tradeType,
+                amountSom,
+                entryPrice,
+                exitPrice,
+                currentPrice,
+                profitSom: Math.round(profitSom),
+                roi: Number(roi.toFixed(2)),
+                riskPercent: Number(riskUsed.toFixed(1)),
+                createdAt: new Date().toISOString()
+            });
+            portfolio.profit = portfolio.trades.reduce((sum, t) => sum + t.profitSom, 0);
+            portfolio.aiMessage = getAiMessage(portfolio.trades[0]);
+            portfolio.lastError = 'Пока ошибок нет. Продолжай торговать осторожно.';
+            savePortfolio();
+            updatePortfolioStats();
+            document.getElementById('tradeForm').reset();
+            updateTradePrice();
+        }
+
+        function calculateProfit() {
+            const amount = Number(document.getElementById('profitAmount').value);
+            const entry = Number(document.getElementById('profitEntry').value);
+            const exit = Number(document.getElementById('profitExit').value);
+            if (!amount || !entry || !exit) return;
+            const coins = amount / (entry * USD_TO_KGS);
+            const profitUsd = coins * (exit - entry);
+            const profitSom = profitUsd * USD_TO_KGS;
+            const roi = amount ? (profitSom / amount) * 100 : 0;
+            document.getElementById('profitResult').innerHTML = `
+                <strong>Прибыль:</strong> ${formatSom(Math.round(profitSom))}<br>
+                <strong>ROI:</strong> ${roi.toFixed(2)}%<br>
+                <strong>Объем позиции:</strong> ${coins.toFixed(6)} монеты
+            `;
+        }
+
+        function calculateDca() {
+            const amount = Number(document.getElementById('dcaAmount').value);
+            const months = Number(document.getElementById('dcaMonths').value);
+            const targetPercent = Number(document.getElementById('dcaTarget').value);
+            const coinSymbol = document.getElementById('dcaCoin').value;
+            if (!amount || !months || !targetPercent) return;
+            const coin = getSelectedCoin(coinSymbol);
+            const invested = amount * months;
+            const acquired = invested / (coin.price * USD_TO_KGS);
+            const averagePrice = coin.price * (1 - Math.min(0.18, months * 0.01));
+            const futurePrice = coin.price * (1 + targetPercent / 100);
+            const futureValue = acquired * futurePrice * USD_TO_KGS;
+            document.getElementById('dcaResult').innerHTML = `
+                <strong>Всего инвестировано:</strong> ${formatSom(invested)}<br>
+                <strong>Накоплено:</strong> ${acquired.toFixed(4)} ${coinSymbol}<br>
+                <strong>Средняя цена:</strong> ${formatUsd(averagePrice)}<br>
+                <strong>Потенциальная прибыль:</strong> ${formatSom(Math.round(futureValue - invested))}
+            `;
+        }
+
+        function calculateMining() {
+            const costKwh = Number(document.getElementById('minePowerCost').value);
+            const gpuCost = Number(document.getElementById('gpuCost').value);
+            const watts = Number(document.getElementById('gpuWatts').value);
+            const hashRate = Number(document.getElementById('gpuHash').value);
+            if (!costKwh || !gpuCost || !watts || !hashRate) return;
+            const revenueUsdPerDay = hashRate * 0.03;
+            const revenueSomPerDay = revenueUsdPerDay * USD_TO_KGS;
+            const costSomPerDay = (watts / 1000) * 24 * costKwh;
+            const profitPerDay = revenueSomPerDay - costSomPerDay;
+            const paybackDays = profitPerDay > 0 ? Math.round(gpuCost / profitPerDay) : null;
+            document.getElementById('mineResult').innerHTML = `
+                <strong>Доход в день:</strong> ${formatSom(Math.round(revenueSomPerDay))}<br>
+                <strong>Расходы в день:</strong> ${formatSom(Math.round(costSomPerDay))}<br>
+                <strong>Чистый доход:</strong> ${formatSom(Math.round(profitPerDay))}<br>
+                <strong>Окупаемость:</strong> ${paybackDays ? paybackDays + ' дней' : 'медленно, снизь затраты'}
+            `;
+        }
+
+        function calculateRisk() {
+            const balance = Number(document.getElementById('riskBalance').value);
+            const risk = Number(document.getElementById('riskPercent').value);
+            const stopLoss = Number(document.getElementById('riskStop').value);
+            if (!balance || !risk || !stopLoss) return;
+            const positionSize = balance * (risk / 100) / (stopLoss / 100);
+            const safeRisk = Math.min(risk, 2);
+            document.getElementById('riskResult').innerHTML = `
+                <strong>Размер позиции:</strong> ${formatSom(Math.round(positionSize))}<br>
+                <strong>Рекомендуемый безопасный риск:</strong> ${safeRisk}%<br>
+                <strong>Максимум для консервативного подхода:</strong> ${formatSom(Math.round(balance * 0.02))}
+            `;
+        }
+
+        document.getElementById('tradeCoin').addEventListener('change', updateTradePrice);
+        document.getElementById('tradeType').addEventListener('change', updateTradePrice);
+        document.getElementById('tradeForm').addEventListener('submit', handleTradeSubmit);
+        document.getElementById('profitCalcBtn').addEventListener('click', calculateProfit);
+        document.getElementById('dcaCalcBtn').addEventListener('click', calculateDca);
+        document.getElementById('mineCalcBtn').addEventListener('click', calculateMining);
+        document.getElementById('riskCalcBtn').addEventListener('click', calculateRisk);
+
+        renderCoinOptions();
+        updatePortfolioStats();
+
+        // Theme Toggle
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('crypto-theme', newTheme);
+            document.getElementById('themeIcon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Initialize Theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('crypto-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeIcon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Language Translations
+        const I18N = {
+            ru: {
+                nav_home: 'Главная',
+                nav_charts: 'Графики',
+                nav_portfolio: 'Портфель',
+                portfolio_title: 'Портфель для Кыргызстана: торговый симулятор на сомах и реальный финансовый навык.',
+                portfolio_subtitle: 'Торгуй виртуальными сомами, считай риск, прибыль и ошибки. Всё работает на локальном уровне, чтобы новичок из KG быстро учился управлять активами и смотрел, как растёт его портфель.',
+                start_simulator: 'Запустить симулятор',
+                learn_more: 'Узнать больше',
+                simulator_title: 'Trading Simulator',
+                simulator_desc: 'Главная часть портфеля: торгуй, анализируй, смотри прибыль/убыток и тренируй риск-менеджмент.'
+            },
+            en: {
+                nav_home: 'Home',
+                nav_charts: 'Charts',
+                nav_portfolio: 'Portfolio',
+                portfolio_title: 'Portfolio for Kyrgyzstan: Trading Simulator in Soms with Real Financial Skills.',
+                portfolio_subtitle: 'Trade virtual soms, calculate risk, profit and mistakes. Everything works locally so beginners from KG can quickly learn to manage assets and watch their portfolio grow.',
+                start_simulator: 'Start Simulator',
+                learn_more: 'Learn More',
+                simulator_title: 'Trading Simulator',
+                simulator_desc: 'The main part of the portfolio: trade, analyze, watch profit/loss and practice risk management.'
+            },
+            ky: {
+                nav_home: 'Башкы',
+                nav_charts: 'Графиктер',
+                nav_portfolio: 'Портфель',
+                portfolio_title: 'Кыргызстан үчүн портфель: сомдо соода симулятору жана реалдуу финансы көндүмү.',
+                portfolio_subtitle: 'Виртуалдык сом менен соода кыл, тобокелдикти, киреше жана каталарды эсепте. KGден жаңы баштагандар активдерди башкарууну тез үйрөнүшү үчүн бардыгы жергиликтүү деңгээлде иштейт.',
+                start_simulator: 'Симуляторду ишке киргизүү',
+                learn_more: 'Көбүрөөк билүү',
+                simulator_title: 'Trading Simulator',
+                simulator_desc: 'Портфелдин негизги бөлүгү: соода кыл, талда, киреше/зыянды көр жана тобокелдикти башкарууну машық.'
+            }
+        };
+
+        // Language Toggle
+        function setLang(lang) {
+            const langs = ['ru', 'en', 'ky'];
+            const l = langs.includes(lang) ? lang : 'ru';
+            localStorage.setItem('crypto-lang', l);
+            document.documentElement.lang = l;
+
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === l);
+            });
+
+            // Update translations
+            applyLanguage(l);
+        }
+
+        // Apply Language
+        function applyLanguage(l) {
+            // Update elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (key && I18N[l][key]) {
+                    const span = el.querySelector('span');
+                    if (span) {
+                        span.textContent = I18N[l][key];
+                    } else {
+                        el.textContent = I18N[l][key];
+                    }
+                }
+            });
+
+            // Update title
+            document.title = 'CryptoUlarbek — ' + I18N[l].nav_portfolio;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            const savedLang = localStorage.getItem('crypto-lang') || 'ru';
+            setLang(savedLang);
+        });
+    </script>
+</body>
+</html>

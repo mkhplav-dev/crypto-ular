@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Личный кабинет — CryptoUlarbek" />
+    <title>Личный кабинет — CryptoUlarbek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <style>
+        /* Lichnyi Kabinet Styles */
+        .lk-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .lk-header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 28px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lk-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            animation: rotate 25s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .lk-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+            border: 5px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+            animation: pulseAvatar 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseAvatar {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+            50% { transform: scale(1.02); box-shadow: 0 0 60px rgba(99, 102, 241, 0.7); }
+        }
+
+        .lk-avatar lord-icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        .lk-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lk-email {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .lk-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lk-status lord-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .lk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .lk-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lk-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 35px -10px rgba(99, 102, 241, 0.2);
+        }
+
+        .lk-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--bg-glass) 0%, rgba(99, 102, 241, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+
+        .lk-card-icon lord-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .lk-card-content {
+            flex: 1;
+        }
+
+        .lk-card-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .lk-card-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .lk-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .lk-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .lk-stat:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .lk-stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .lk-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .lk-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .lk-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .lk-btn--primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .lk-btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+        }
+
+        .lk-btn--secondary {
+            background: var(--bg-glass);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .lk-btn--secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent);
+        }
+
+        .lk-btn--danger {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: #f43f5e;
+        }
+
+        .lk-btn--danger:hover {
+            background: rgba(244, 63, 94, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .lk-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn--user {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 0.55rem;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn--user:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .lk-container {
+                padding: 1rem;
+            }
+            .lk-header {
+                padding: 2rem 1.5rem;
+            }
+            .lk-avatar {
+                width: 110px;
+                height: 110px;
+            }
+            .lk-name {
+                font-size: 1.6rem;
+            }
+            .lk-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="app">
+        <header class="header" id="header">
+            <div class="header__container">
+                <a href="index.html" class="logo">
+                    <span class="logo__mark" aria-hidden="true"></span>
+                    <span class="logo__text">Crypto</span>
+                    <span class="logo__badge">Личный кабинет</span>
+                </a>
+                <div class="header__actions" style="max-width: none;">
+                    <div class="lang-selector">
+                        <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                        <button class="lang-btn" data-lang="ky" onclick="setLang('ky')">KY</button>
+                    </div>
+                    <a href="profile.html" class="btn btn--icon btn--user" title="Расширенный профиль">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </a>
+                    <a href="index.html" class="btn btn--ghost">
+                        <lord-icon src="https://cdn.lordicon.com/cnpvygkr.json" trigger="hover" colors="primary:#ffffff" style="width:18px;height:18px"></lord-icon>
+                        На главную
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="lk-container">
+                <!-- Header Card -->
+                <div class="lk-header">
+                    <div class="lk-avatar">
+                        <lord-icon src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" colors="primary:#ffffff"></lord-icon>
+                    </div>
+                    <h1 class="lk-name" id="userDisplayName">Пользователь</h1>
+                    <p class="lk-email" id="userEmailDisplay">email@example.com</p>
+                    <div class="lk-status">
+                        <lord-icon src="https://cdn.lordicon.com/egmlnyku.json" trigger="loop" delay="1000" colors="primary:#10b981"></lord-icon>
+                        <span id="statusText">Активный аккаунт</span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="lk-section-title">
+                    <lord-icon src="https://cdn.lordicon.com/hsqbkhpi.json" trigger="hover" colors="primary:#6366f1" style="width:24px;height:24px"></lord-icon>
+                    Статистика
+                </div>
+                <div class="lk-stats">
+                    <div class="lk-stat">
+                        <div class="lk-stat-value" id="userFavoritesCount">0</div>
+                        <div class="lk-stat-label">Избранное</div>
+                    </div>
+                    <div class="lk-stat">
+                        <div class="lk-stat-value" id="userPortfolioCount">0</div>
+                        <div class="lk-stat-label">Портфель</div>
+                    </div>
+                    <div class="lk-stat">
+                        <div class="lk-stat-value" id="userJoinDate">—</div>
+                        <div class="lk-stat-label">Регистрация</div>
+                    </div>
+                    <div class="lk-stat">
+                        <div class="lk-stat-value" id="userProvider">Email</div>
+                        <div class="lk-stat-label">Вход</div>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="lk-section-title">
+                    <lord-icon src="https://cdn.lordicon.com/ucvsemmc.json" trigger="hover" colors="primary:#8b5cf6" style="width:24px;height:24px"></lord-icon>
+                    Информация
+                </div>
+                <div class="lk-grid">
+                    <div class="lk-card">
+                        <div class="lk-card-icon">
+                            <lord-icon src="https://cdn.lordicon.com/xtzuywza.json" trigger="hover" colors="primary:#6366f1" style="width:28px;height:28px"></lord-icon>
+                        </div>
+                        <div class="lk-card-content">
+                            <div class="lk-card-label">Email адрес</div>
+                            <div class="lk-card-value" id="userEmail">—</div>
+                        </div>
+                    </div>
+                    <div class="lk-card">
+                        <div class="lk-card-icon">
+                            <lord-icon src="https://cdn.lordicon.com/ucvsemmc.json" trigger="hover" colors="primary:#f59e0b" style="width:28px;height:28px"></lord-icon>
+                        </div>
+                        <div class="lk-card-content">
+                            <div class="lk-card-label">Имя</div>
+                            <div class="lk-card-value" id="userFirstName">—</div>
+                        </div>
+                    </div>
+                    <div class="lk-card">
+                        <div class="lk-card-icon">
+                            <lord-icon src="https://cdn.lordicon.com/ucvsemmc.json" trigger="hover" colors="primary:#f43f5e" style="width:28px;height:28px"></lord-icon>
+                        </div>
+                        <div class="lk-card-content">
+                            <div class="lk-card-label">Фамилия</div>
+                            <div class="lk-card-value" id="userLastName">—</div>
+                        </div>
+                    </div>
+                    <div class="lk-card">
+                        <div class="lk-card-icon">
+                            <lord-icon src="https://cdn.lordicon.com/qrbokoyz.json" trigger="hover" colors="primary:#10b981" style="width:28px;height:28px"></lord-icon>
+                        </div>
+                        <div class="lk-card-content">
+                            <div class="lk-card-label">User ID</div>
+                            <div class="lk-card-value" id="userId">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="lk-section-title">
+                    <lord-icon src="https://cdn.lordicon.com/srsjylvj.json" trigger="hover" colors="primary:#ec4899" style="width:24px;height:24px"></lord-icon>
+                    Действия
+                </div>
+                <div class="lk-actions">
+                    <a href="portfolio.html" class="lk-btn lk-btn--secondary">
+                        <lord-icon src="https://cdn.lordicon.com/srsjylvj.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon>
+                        Мой портфель
+                    </a>
+                    <a href="charts.html" class="lk-btn lk-btn--secondary">
+                        <lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon>
+                        Графики
+                    </a>
+                    <a href="profile.html" class="lk-btn lk-btn--secondary">
+                        <lord-icon src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon>
+                        Расширенный профиль
+                    </a>
+                    <button type="button" id="logoutBtn" class="lk-btn lk-btn--danger" style="display: none;">
+                        <lord-icon src="https://cdn.lordicon.com/jxhgzics.json" trigger="hover" colors="primary:#f43f5e" style="width:22px;height:22px"></lord-icon>
+                        Выйти
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="authError" class="auth-error" style="display: none;"></div>
+    <div id="profileLoading" class="auth-loading" style="display: none;">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Загрузка...</span>
+    </div>
+
+    <script type="module" src="./auth-profile.js"></script>
+    <script>
+        // Language support
+        const translations = {
+            ru: { status: 'Активный аккаунт', portfolio: 'Мой портфель', charts: 'Графики', extended: 'Расширенный профиль', logout: 'Выйти', back: 'На главную' },
+            en: { status: 'Active Account', portfolio: 'My Portfolio', charts: 'Charts', extended: 'Extended Profile', logout: 'Logout', back: 'Back to Home' },
+            ky: { status: 'Активдүү аккаунт', portfolio: 'Менин портфелим', charts: 'Графиктер', extended: 'Кеңейтилген профиль', logout: 'Чыгуу', back: 'Башкы бетке' }
+        };
+
+        function setLang(lang) {
+            const l = ['ru', 'en', 'ky'].includes(lang) ? lang : 'ru';
+            localStorage.setItem('crypto-lang', l);
+            document.documentElement.lang = l;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === l);
+            });
+            
+            const t = translations[l];
+            document.getElementById('statusText').textContent = t.status;
+            document.querySelectorAll('.lk-btn').forEach((btn, i) => {
+                if (i === 0) btn.innerHTML = `<lord-icon src="https://cdn.lordicon.com/srsjylvj.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon> ${t.portfolio}`;
+                if (i === 1) btn.innerHTML = `<lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon> ${t.charts}`;
+                if (i === 2) btn.innerHTML = `<lord-icon src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" colors="primary:#ffffff" style="width:22px;height:22px"></lord-icon> ${t.extended}`;
+                if (i === 3) btn.innerHTML = `<lord-icon src="https://cdn.lordicon.com/jxhgzics.json" trigger="hover" colors="primary:#f43f5e" style="width:22px;height:22px"></lord-icon> ${t.logout}`;
+            });
+        }
+
+        const savedLang = localStorage.getItem('crypto-lang') || 'ru';
+        setLang(savedLang);
+    </script>
+</body>
+</html>

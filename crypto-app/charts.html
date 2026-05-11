@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CryptoUlarbek — Детальные графики криптовалют в реальном времени">
+    <title>Графики криптовалют — CryptoUlarbek</title>
+    <link rel="stylesheet" href="charts.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="pictures.png">
+    <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- Lordicon Animated Icons -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">CryptoUlarbek</div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link home-btn">
+                <lord-icon src="https://cdn.lordicon.com/cnpvygkr.json" trigger="hover" colors="primary:#ffffff" style="width:18px;height:18px"></lord-icon>
+                <span>Главная</span>
+            </a>
+            <a href="#charts" class="nav-link active"><span>Графики</span></a>
+            <a href="portfolio.html" class="nav-link"><span>Портфель</span></a>
+            <a href="#news" class="nav-link"><span>Новости</span></a>
+            <a href="#settings" class="nav-link"><span>Настройки</span></a>
+        </nav>
+        <div class="controls">
+            <div class="lang-selector">
+                <button class="lang-btn active" data-lang="ru">RU</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ky">KY</button>
+            </div>
+            <button class="btn" id="themeToggle">🌙</button>
+            <a href="lichnyi.html" class="btn btn--icon btn--user" title="Личный кабинет">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalVolume">$0.00B</div>
+                <div class="stat-label">Общий объем 24ч</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalCoins">0</div>
+                <div class="stat-label">Всего монет</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgChange">0.00%</div>
+                <div class="stat-label">Среднее изменение</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="marketCap">$0.00T</div>
+                <div class="stat-label">Рыночная капитализация</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Chart Container -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="crypto-info">
+                        <img class="crypto-icon" id="cryptoIcon" src="" alt="Crypto Icon" loading="lazy" data-symbol="BTC" data-source-index="0" onerror="handleIconError(this, this.dataset.symbol)">
+                        <div class="crypto-details">
+                            <h2 id="cryptoName">Bitcoin</h2>
+                            <div>
+                                <span class="crypto-price" id="cryptoPrice">$0.00</span>
+                                <span class="crypto-change positive" id="cryptoChange">+0.00%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-controls">
+                        <div class="chart-type-selector">
+                            <button class="chart-type-btn active" data-chart-type="candles" title="Свечи - показывает открытие, максимум, минимум и закрытие">
+                                <lord-icon src="https://cdn.lordicon.com/mfmkurxf.json" trigger="hover" colors="primary:#00d4ff,secondary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                                <span>Свечи</span>
+                            </button>
+                            <button class="chart-type-btn" data-chart-type="line" title="Линия - простой график цены закрытия">
+                                <lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#00d4ff,secondary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                                <span>Линия</span>
+                            </button>
+                            <button class="chart-type-btn" data-chart-type="area" title="Область - линия с цветной заливкой">
+                                <lord-icon src="https://cdn.lordicon.com/utxgregt.json" trigger="hover" colors="primary:#10b981,secondary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                                <span>Область</span>
+                            </button>
+                            <button class="chart-type-btn" data-chart-type="bars" title="Бары - вертикальные столбики цен">
+                                <lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#ff6b6b,secondary:#ffffff" style="width:20px;height:20px;transform:rotate(90deg)"></lord-icon>
+                                <span>Бары</span>
+                            </button>
+                        </div>
+                        <div class="timeframe-selector">
+                            <button class="timeframe-btn active" data-timeframe="1D">1D</button>
+                            <button class="timeframe-btn" data-timeframe="7D">7D</button>
+                            <button class="timeframe-btn" data-timeframe="1M">1M</button>
+                            <button class="timeframe-btn" data-timeframe="3M">3M</button>
+                        </div>
+                        <div class="currency-selector">
+                            <button class="currency-btn active" data-currency="usd" onclick="setCurrency('usd')">USD</button>
+                            <button class="currency-btn" data-currency="kgs" onclick="setCurrency('kgs')">KGS</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-info" id="chartInfo">
+                    <span class="chart-info-icon">💡</span>
+                    <span class="chart-info-text">Area график (как на CoinGecko) — линия цены с зелёным градиентом под ней. Наглядно показывает тренд.</span>
+                </div>
+                <div class="chart-wrapper" id="chartWrapper"></div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title" data-i18n="top_gainers">Топ роста</div>
+                    <div id="topGainers">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-title" data-i18n="top_losers">Топ падения</div>
+                    <div id="topLosers">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-title" data-i18n="kyrgyz_cryptocurrencies">Кыргыз крипто</div>
+                    <div id="kyrgyzCoins">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title" data-i18n="all_cryptocurrencies">Все криптовалюты</div>
+                <div class="table-controls">
+                    <input type="text" class="search-input" placeholder="Поиск..." id="searchInput">
+                </div>
+            </div>
+            <div id="cryptoTable">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Загрузка данных...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kyrgyzstan Special Section -->
+    <div class="kyrgyzstan-section">
+        <div class="kyrgyzstan-header">
+            <div class="kyrgyzstan-flag">🇰🇬</div>
+            <div class="kyrgyzstan-title">
+                <h3>График для Кыргызстана</h3>
+                <p>Цены в кыргызских сомах (KGS) · 1 USD = 87.5 KGS</p>
+            </div>
+        </div>
+        <div class="kyrgyzstan-cards">
+            <div class="kg-card" onclick="selectCrypto('BTC'); setCurrency('kgs'); scrollToChart();">
+                <div class="kg-card-icon">₿</div>
+                <div class="kg-card-info">
+                    <strong>Bitcoin</strong>
+                    <span class="kg-card-price" id="btcKgsPrice">Загрузка...</span>
+                </div>
+                <div class="kg-card-badge">BTC</div>
+            </div>
+            <div class="kg-card" onclick="selectCrypto('ETH'); setCurrency('kgs'); scrollToChart();">
+                <div class="kg-card-icon">Ξ</div>
+                <div class="kg-card-info">
+                    <strong>Ethereum</strong>
+                    <span class="kg-card-price" id="ethKgsPrice">Загрузка...</span>
+                </div>
+                <div class="kg-card-badge">ETH</div>
+            </div>
+            <div class="kg-card" onclick="selectCrypto('BNB'); setCurrency('kgs'); scrollToChart();">
+                <div class="kg-card-icon">🔶</div>
+                <div class="kg-card-info">
+                    <strong>BNB</strong>
+                    <span class="kg-card-price" id="bnbKgsPrice">Загрузка...</span>
+                </div>
+                <div class="kg-card-badge">BNB</div>
+            </div>
+            <div class="kg-card" onclick="selectCrypto('SOL'); setCurrency('kgs'); scrollToChart();">
+                <div class="kg-card-icon">◎</div>
+                <div class="kg-card-info">
+                    <strong>Solana</strong>
+                    <span class="kg-card-price" id="solKgsPrice">Загрузка...</span>
+                </div>
+                <div class="kg-card-badge">SOL</div>
+            </div>
+        </div>
+        <div class="kyrgyzstan-info">
+            <p>💡 Нажмите на карточку, чтобы увидеть график в сомах</p>
+        </div>
+    </div>
+
+    <!-- Refresh Indicator -->
+    <div class="refresh-indicator" id="refreshIndicator" title="Обновить данные">
+        <div class="refresh-icon">🔄</div>
+        <div class="refresh-countdown" id="refreshCountdown">60</div>
+    </div>
+<script src="charts.js"></script>
+
+</body>
+</html>

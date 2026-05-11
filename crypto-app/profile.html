@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Профиль пользователя — CryptoUlarbek" />
+        <title>Профиль — CryptoUlarbek</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.lordicon.com/lordicon.js"></script>
+        <style>
+            /* Profile Page Styles */
+            .profile-container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+
+            .profile-header-card {
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                border-radius: 24px;
+                padding: 2.5rem;
+                text-align: center;
+                margin-bottom: 2rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .profile-header-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+                animation: rotate 20s linear infinite;
+            }
+
+            @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                position: relative;
+                z-index: 1;
+                border: 4px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            }
+
+            .profile-avatar lord-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .profile-name {
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: 0.5rem;
+                position: relative;
+                z-index: 1;
+            }
+
+            .profile-email {
+                font-size: 1rem;
+                color: var(--text-secondary);
+                position: relative;
+                z-index: 1;
+            }
+
+            .profile-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(16, 185, 129, 0.15);
+                border: 1px solid rgba(16, 185, 129, 0.3);
+                color: #10b981;
+                padding: 0.5rem 1rem;
+                border-radius: 50px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-top: 1rem;
+                position: relative;
+                z-index: 1;
+            }
+
+            .profile-info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .profile-info-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .profile-info-card:hover {
+                transform: translateY(-3px);
+                border-color: var(--border-hover);
+                box-shadow: var(--shadow-hover);
+            }
+
+            .profile-info-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                background: var(--bg-glass);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .profile-info-content {
+                flex: 1;
+            }
+
+            .profile-info-label {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                margin-bottom: 0.25rem;
+            }
+
+            .profile-info-value {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                font-family: 'JetBrains Mono', monospace;
+            }
+
+            .profile-actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .profile-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.875rem 1.5rem;
+                border-radius: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: none;
+                font-size: 0.95rem;
+            }
+
+            .profile-btn--primary {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+            }
+
+            .profile-btn--primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+            }
+
+            .profile-btn--danger {
+                background: rgba(244, 63, 94, 0.1);
+                border: 1px solid rgba(244, 63, 94, 0.3);
+                color: #f43f5e;
+            }
+
+            .profile-btn--danger:hover {
+                background: rgba(244, 63, 94, 0.2);
+                transform: translateY(-2px);
+            }
+
+            .profile-btn--secondary {
+                background: var(--bg-glass);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+            }
+
+            .profile-btn--secondary:hover {
+                background: var(--bg-hover);
+                border-color: var(--border-hover);
+            }
+
+            .profile-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .profile-stat {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.25rem;
+                text-align: center;
+            }
+
+            .profile-stat-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--accent);
+                margin-bottom: 0.25rem;
+            }
+
+            .profile-stat-label {
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+            }
+
+            .btn--user {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border: none;
+                padding: 0.55rem;
+                border-radius: 12px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+
+            .btn--user:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
+            }
+
+            @media (max-width: 640px) {
+                .profile-container {
+                    padding: 1rem;
+                }
+                .profile-header-card {
+                    padding: 1.5rem;
+                }
+                .profile-avatar {
+                    width: 100px;
+                    height: 100px;
+                }
+                .profile-name {
+                    font-size: 1.5rem;
+                }
+                .profile-stats {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="noise" aria-hidden="true"></div>
+        <div class="app">
+            <header class="header" id="header">
+                <div class="header__container">
+                    <a href="index.html" class="logo">
+                        <span class="logo__mark" aria-hidden="true"></span>
+                        <span class="logo__text">Crypto</span>
+                        <span class="logo__badge">Профиль</span>
+                    </a>
+                    <div class="header__actions" style="max-width: none;">
+                        <div class="lang-selector">
+                            <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                            <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                            <button class="lang-btn" data-lang="ky" onclick="setLang('ky')">KY</button>
+                        </div>
+                        <a href="lichnyi.html" class="btn btn--icon btn--user" title="Альтернативный профиль">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </a>
+                        <a href="index.html" class="btn btn--ghost">
+                            <lord-icon src="https://cdn.lordicon.com/cnpvygkr.json" trigger="hover" colors="primary:#ffffff" style="width:18px;height:18px"></lord-icon>
+                            На главную
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="main">
+                <div class="profile-container">
+                    <!-- Profile Header Card -->
+                    <div class="profile-header-card">
+                        <div class="profile-avatar">
+                            <lord-icon src="https://cdn.lordicon.com/kthelypq.json" trigger="hover" colors="primary:#ffffff"></lord-icon>
+                        </div>
+                        <h1 class="profile-name" id="userDisplayName">Пользователь</h1>
+                        <p class="profile-email" id="userEmailDisplay">email@example.com</p>
+                        <div class="profile-badge">
+                            <lord-icon src="https://cdn.lordicon.com/egmlnyku.json" trigger="loop" delay="1000" colors="primary:#10b981" style="width:16px;height:16px"></lord-icon>
+                            Активный аккаунт
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="profile-stat-value" id="userJoinDate">—</div>
+                            <div class="profile-stat-label">Дата регистрации</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value" id="userFavoritesCount">0</div>
+                            <div class="profile-stat-label">Избранное</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-value" id="userPortfolioValue">0</div>
+                            <div class="profile-stat-label">Портфель</div>
+                        </div>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div class="profile-info-grid">
+                        <div class="profile-info-card">
+                            <div class="profile-info-icon">
+                                <lord-icon src="https://cdn.lordicon.com/xtzuywza.json" trigger="hover" colors="primary:#6366f1" style="width:24px;height:24px"></lord-icon>
+                            </div>
+                            <div class="profile-info-content">
+                                <div class="profile-info-label">Email</div>
+                                <div class="profile-info-value" id="userEmail">—</div>
+                            </div>
+                        </div>
+                        <div class="profile-info-card">
+                            <div class="profile-info-icon">
+                                <lord-icon src="https://cdn.lordicon.com/sdgydqtr.json" trigger="hover" colors="primary:#8b5cf6" style="width:24px;height:24px"></lord-icon>
+                            </div>
+                            <div class="profile-info-content">
+                                <div class="profile-info-label">Метод входа</div>
+                                <div class="profile-info-value" id="userProvider">—</div>
+                            </div>
+                        </div>
+                        <div class="profile-info-card">
+                            <div class="profile-info-icon">
+                                <lord-icon src="https://cdn.lordicon.com/qrbokoyz.json" trigger="hover" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon>
+                            </div>
+                            <div class="profile-info-content">
+                                <div class="profile-info-label">User ID</div>
+                                <div class="profile-info-value" id="userId">—</div>
+                            </div>
+                        </div>
+                        <div class="profile-info-card">
+                            <div class="profile-info-icon">
+                                <lord-icon src="https://cdn.lordicon.com/ucvsemmc.json" trigger="hover" colors="primary:#f59e0b" style="width:24px;height:24px"></lord-icon>
+                            </div>
+                            <div class="profile-info-content">
+                                <div class="profile-info-label">Имя</div>
+                                <div class="profile-info-value" id="userFirstName">—</div>
+                            </div>
+                        </div>
+                        <div class="profile-info-card">
+                            <div class="profile-info-icon">
+                                <lord-icon src="https://cdn.lordicon.com/ucvsemmc.json" trigger="hover" colors="primary:#f43f5e" style="width:24px;height:24px"></lord-icon>
+                            </div>
+                            <div class="profile-info-content">
+                                <div class="profile-info-label">Фамилия</div>
+                                <div class="profile-info-value" id="userLastName">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="profile-actions">
+                        <a href="portfolio.html" class="profile-btn profile-btn--secondary">
+                            <lord-icon src="https://cdn.lordicon.com/srsjylvj.json" trigger="hover" colors="primary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                            Мой портфель
+                        </a>
+                        <a href="charts.html" class="profile-btn profile-btn--secondary">
+                            <lord-icon src="https://cdn.lordicon.com/xsdtfyne.json" trigger="hover" colors="primary:#ffffff" style="width:20px;height:20px"></lord-icon>
+                            Графики
+                        </a>
+                        <button type="button" id="logoutBtn" class="profile-btn profile-btn--danger" style="display: none;">
+                            <lord-icon src="https://cdn.lordicon.com/jxhgzics.json" trigger="hover" colors="primary:#f43f5e" style="width:20px;height:20px"></lord-icon>
+                            Выйти
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div id="authError" class="auth-error" style="display: none;"></div>
+        <div id="profileLoading" class="auth-loading" style="display: none;">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Загрузка...</span>
+        </div>
+
+        <script type="module" src="./auth-profile.js"></script>
+        <script>
+            // Language toggle for profile page
+            function setLang(lang) {
+                const langs = ['ru', 'en', 'ky'];
+                const l = langs.includes(lang) ? lang : 'ru';
+                localStorage.setItem('crypto-lang', l);
+                document.documentElement.lang = l;
+                
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === l);
+                });
+                
+                // Update UI texts
+                const texts = {
+                    ru: { portfolio: 'Мой портфель', charts: 'Графики', logout: 'Выйти', active: 'Активный аккаунт' },
+                    en: { portfolio: 'My Portfolio', charts: 'Charts', logout: 'Logout', active: 'Active Account' },
+                    ky: { portfolio: 'Менин портфелим', charts: 'Графиктер', logout: 'Чыгуу', active: 'Активдүү аккаунт' }
+                };
+                
+                const t = texts[l];
+                document.querySelector('.profile-badge').innerHTML = `
+                    <lord-icon src="https://cdn.lordicon.com/egmlnyku.json" trigger="loop" delay="1000" colors="primary:#10b981" style="width:16px;height:16px"></lord-icon>
+                    ${t.active}
+                `;
+            }
+            
+            // Initialize language
+            const savedLang = localStorage.getItem('crypto-lang') || 'ru';
+            setLang(savedLang);
+        </script>
+    </body>
+</html>
+
