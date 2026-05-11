@@ -104,6 +104,99 @@
                 transform: translateY(-2px);
                 box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.4);
             }
+
+            @media (max-width: 480px) {
+                .header__container {
+                    padding: 0.5rem 0.75rem;
+                }
+
+                .logo__text {
+                    font-size: 1.1rem;
+                }
+
+                .logo__badge {
+                    display: none;
+                }
+
+                .header__actions {
+                    gap: 0.4rem;
+                }
+
+                .lang-selector {
+                    padding: 2px;
+                    gap: 2px;
+                }
+
+                .lang-btn {
+                    min-width: 32px;
+                    padding: 0.25rem 0.35rem;
+                    font-size: 0.7rem;
+                }
+
+                .btn--icon {
+                    padding: 0.45rem;
+                }
+
+                .btn--user svg {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                .btn--ghost {
+                    padding: 0.4rem 0.75rem;
+                    font-size: 0.8rem;
+                }
+
+                .auth-section {
+                    padding: 100px 0.75rem 1rem;
+                }
+
+                .auth-card {
+                    padding: 1.5rem;
+                    border-radius: 16px;
+                }
+
+                .auth-tabs {
+                    margin-bottom: 1.5rem;
+                }
+
+                .auth-tab {
+                    padding: 0.75rem;
+                    font-size: 0.9rem;
+                }
+
+                .auth-label {
+                    font-size: 0.85rem;
+                }
+
+                .auth-input {
+                    padding: 0.75rem;
+                    font-size: 16px;
+                }
+
+                .auth-btn {
+                    padding: 0.875rem;
+                    font-size: 0.9rem;
+                }
+
+                .auth-divider {
+                    margin: 1.5rem 0;
+                }
+
+                .oauth-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .oauth-btn {
+                    padding: 0.65rem;
+                    font-size: 0.85rem;
+                }
+
+                /* Touch-friendly */
+                .btn, .auth-tab, .auth-input, .oauth-btn {
+                    min-height: 44px;
+                }
+            }
         </style>
     </head>
     <body>
