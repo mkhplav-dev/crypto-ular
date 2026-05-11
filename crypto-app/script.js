@@ -617,6 +617,7 @@ function handleMoverIconError(img) {
 function renderMovers() {
     const gainersEl = document.getElementById('topGainers');
     const losersEl = document.getElementById('topLosers');
+    console.log('renderMovers called:', { gainersEl: !!gainersEl, losersEl: !!losersEl, coinsLength: state.coins.length });
     if (!gainersEl || !losersEl || !state.coins.length) {
         console.log('renderMovers: Elements or data not available', { gainersEl, losersEl, coinsLength: state.coins.length });
         return;
@@ -659,6 +660,7 @@ function renderMovers() {
 
     gainersEl.innerHTML = gainers.map((c) => row(c, true)).join('');
     losersEl.innerHTML = losers.map((c) => row(c, false)).join('');
+    console.log('renderMovers completed:', { gainersCount: gainers.length, losersCount: losers.length });
 }
 
 function animateValue(el, end, formatter, duration = 900) {
@@ -1514,6 +1516,12 @@ function init() {
     // Initialize with mock data immediately so movers are visible
     state.coins = Api.getMockCoins();
     renderMovers();
+
+    // Double-check render after DOM is fully ready
+    setTimeout(() => {
+        renderMovers();
+        console.log('Delayed renderMovers called, coins:', state.coins.length);
+    }, 100);
 
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
