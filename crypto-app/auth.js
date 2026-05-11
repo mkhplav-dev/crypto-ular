@@ -165,7 +165,23 @@ function validateRegisterForm(username, email, phone, password, confirm) {
 
 document.addEventListener("DOMContentLoaded", async () => {
     const errorEl = document.getElementById('authError');
-    
+
+    // Handle OAuth callback (Google/others redirect with ?code=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+
+    if (error) {
+        showError(errorEl, `Ошибка авторизации: ${error}`);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (code) {
+        // OAuth callback detected - Supabase will auto-exchange code for session
+        console.log('OAuth callback detected, processing...');
+        // Wait a moment for Supabase to process the callback
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     // Проверка авторизации
     const authenticated = await isAuthenticated();
     if (authenticated) {
