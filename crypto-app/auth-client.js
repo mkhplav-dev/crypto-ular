@@ -7,9 +7,10 @@ import { supabase } from "./auth-supabase-client.js";
 
 function getRedirectTo() {
     const { origin, pathname } = window.location;
-    if (!origin || origin === "null") return "profile.html";
+    if (!origin || origin === "null") return "auth.html";
     const basePath = pathname.substring(0, pathname.lastIndexOf('/') + 1);
-    return `${origin}${basePath}profile.html`;
+    // OAuth callback should return to auth.html to handle the code
+    return `${origin}${basePath}auth.html`;
 }
 
 /**
@@ -29,7 +30,7 @@ export async function register(email, password, username = '', firstName = '', l
         email,
         password,
         options: {
-            emailRedirectTo: getRedirectTo(),
+            emailRedirectTo: getRedirectTo().replace('auth.html', 'profile.html'), // Email confirmation goes to profile
             data: {
                 username,
                 first_name: firstName,
