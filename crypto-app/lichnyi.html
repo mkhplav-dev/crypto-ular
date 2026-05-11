@@ -195,7 +195,6 @@
             font-size: 1.75rem;
             font-weight: 800;
             background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
-            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
@@ -301,6 +300,146 @@
             }
             .lk-stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header__container {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .logo__text {
+                font-size: 1.1rem;
+            }
+
+            .logo__badge {
+                display: none;
+            }
+
+            .btn--icon {
+                padding: 0.45rem;
+            }
+
+            .btn--user svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .lang-selector {
+                padding: 2px;
+                gap: 2px;
+            }
+
+            .lang-btn {
+                min-width: 32px;
+                padding: 0.25rem 0.35rem;
+                font-size: 0.7rem;
+            }
+
+            .btn--ghost {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .lk-container {
+                padding: 0.75rem;
+            }
+
+            .lk-header {
+                padding: 1.5rem 1rem;
+                border-radius: 20px;
+            }
+
+            .lk-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .lk-avatar lord-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .lk-name {
+                font-size: 1.25rem;
+            }
+
+            .lk-email {
+                font-size: 0.9rem;
+            }
+
+            .lk-status {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .lk-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .lk-stat {
+                padding: 1rem 0.5rem;
+            }
+
+            .lk-stat-value {
+                font-size: 1.25rem;
+            }
+
+            .lk-stat-label {
+                font-size: 0.75rem;
+            }
+
+            .lk-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .lk-card {
+                padding: 1rem;
+            }
+
+            .lk-card-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .lk-card-icon lord-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .lk-card-label {
+                font-size: 0.8rem;
+            }
+
+            .lk-card-value {
+                font-size: 0.9rem;
+            }
+
+            .lk-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .lk-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.875rem;
+            }
+
+            .lk-section-title {
+                font-size: 1rem;
+            }
+
+            .lk-section-title lord-icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* Touch-friendly */
+            .btn, .lk-btn, .lk-card, .lk-stat {
+                min-height: 44px;
             }
         }
     </style>
