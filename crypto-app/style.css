@@ -101,6 +101,19 @@ body.reduce-motion *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile touch optimizations */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+/* Prevent callout on iOS */
+button, a {
+    -webkit-touch-callout: none;
 }
 
 body {
@@ -1915,6 +1928,16 @@ body.reduce-motion .ticker {
 .movers__list {
     list-style: none;
     padding: 0.75rem 0;
+    min-height: 200px;
+}
+
+.movers__list:empty::before {
+    content: 'Загрузка данных...';
+    display: block;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .movers__row {
@@ -1925,9 +1948,9 @@ body.reduce-motion .ticker {
     gap: 0.75rem;
     transition: all 0.2s ease;
     cursor: pointer;
-    animation: slideIn 0.3s ease-out backwards;
-    opacity: 0;
-    transform: translateX(-10px);
+    animation: slideIn 0.3s ease-out forwards;
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .movers__row:nth-child(1) { animation-delay: 0.05s; }
@@ -3473,13 +3496,24 @@ body.reduce-motion .reveal {
     .header__container {
         flex-wrap: wrap;
         padding: 0.7rem 1rem;
+        gap: 0.5rem;
     }
 
     .header__actions {
         order: 3;
         width: 100%;
         max-width: none;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    .header__btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: auto;
     }
 
     .search-box {
@@ -3487,7 +3521,7 @@ body.reduce-motion .reveal {
     }
 
     .main {
-        padding: 5.5rem 1rem 2rem;
+        padding: 6.5rem 1rem 2rem;
     }
 
     .chart-wrapper {
@@ -3545,6 +3579,481 @@ body.reduce-motion .reveal {
 }
 
 @media (max-width: 480px) {
+    /* Header mobile - extra compact to fit all */
+    .header__container {
+        padding: 0.4rem 0.5rem;
+        gap: 0.4rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    /* Extra small logo */
+    .logo {
+        order: 1;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .logo__mark {
+        width: 28px;
+        height: 28px;
+    }
+
+    .logo__text {
+        font-size: 1rem;
+    }
+
+    .logo__badge {
+        display: none;
+    }
+
+    /* Compact search */
+    .search-box {
+        order: 2;
+        flex: 1 1 auto;
+        margin: 0;
+        min-width: 100px;
+        padding: 0.35rem 0.6rem;
+    }
+
+    .search-box__icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .search-box__input {
+        font-size: 13px;
+        padding: 0;
+    }
+
+    .search-box__input::placeholder {
+        font-size: 12px;
+    }
+
+    /* Small burger */
+    .header__burger {
+        order: 3;
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        padding: 0.4rem;
+    }
+
+    .header__burger span {
+        width: 16px;
+        height: 2px;
+    }
+
+    /* Row 2: All buttons compact */
+    .header__actions {
+        order: 4;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        width: 100%;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Hide nav by default on mobile */
+    .nav {
+        display: none;
+        order: 5;
+        width: 100%;
+        flex-basis: 100%;
+        flex-direction: column;
+        gap: 0.2rem;
+        padding: 0.4rem 0;
+    }
+
+    .header.nav-open .nav {
+        display: flex;
+    }
+
+    .nav__link {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.85rem;
+        min-width: auto;
+    }
+
+    .header__btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+        align-items: center;
+    }
+
+    /* Extra small buttons */
+    .btn--icon,
+    .btn--ghost,
+    .btn--fav {
+        padding: 0.3rem;
+        min-width: 28px;
+        min-height: 28px;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+    }
+
+    .btn--icon svg,
+    .btn--ghost svg,
+    .btn--fav svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Hide user badge text */
+    .auth-header-user {
+        display: none;
+    }
+
+    /* Compact favorites count */
+    .favorites-count {
+        top: -3px;
+        right: -3px;
+        min-width: 12px;
+        height: 12px;
+        font-size: 0.55rem;
+        padding: 0 2px;
+    }
+
+    /* Extra compact lang selector */
+    .lang-selector {
+        padding: 1px;
+        gap: 1px;
+    }
+
+    .lang-btn {
+        min-width: 24px;
+        padding: 0.15rem 0.25rem;
+        font-size: 0.6rem;
+        border-radius: 4px;
+    }
+
+    /* Compact auth buttons - icons only */
+    .auth-header-btn {
+        font-size: 0;
+        padding: 0.3rem;
+        min-width: 28px;
+        min-height: 28px;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+    }
+
+    .auth-header-btn::before {
+        content: '👤';
+        font-size: 12px;
+    }
+
+    #logoutBtn.auth-header-btn::before {
+        content: '🚪';
+    }
+
+    /* Compact refresh indicator */
+    .refresh-indicator {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.6rem;
+        gap: 0.2rem;
+        border-radius: 10px;
+    }
+
+    .refresh-indicator__text {
+        display: none;
+    }
+
+    .refresh-indicator__dot {
+        width: 5px;
+        height: 5px;
+    }
+
+    /* Hero mobile */
+    .hero {
+        padding: 1.5rem 0.75rem;
+    }
+
+    .hero__title {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .hero__subtitle {
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+
+    .hero__actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .hero__btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    /* Stats mobile */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        padding: 0 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    /* Table mobile */
+    .crypto-table {
+        font-size: 0.8rem;
+    }
+
+    .crypto-table__th,
+    .crypto-cell {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .crypto-table__th:first-child,
+    .crypto-cell:first-child {
+        padding-left: 0.75rem;
+    }
+
+    .crypto-table__th:last-child,
+    .crypto-cell:last-child {
+        padding-right: 0.75rem;
+    }
+
+    /* Hide more columns on very small screens */
+    .crypto-table__th--mcap,
+    .crypto-cell--mcap {
+        display: none;
+    }
+
+    /* Movers mobile */
+    .movers {
+        padding: 0 0.75rem;
+    }
+
+    .movers__col {
+        border-radius: 16px;
+    }
+
+    .movers__head {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .movers__row {
+        padding: 0.6rem 1rem;
+    }
+
+    .movers__img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .movers__name {
+        font-size: 0.8rem;
+    }
+
+    .movers__sym {
+        font-size: 0.7rem;
+    }
+
+    .movers__pct {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* About section mobile */
+    .about {
+        padding: 2rem 0.75rem;
+    }
+
+    .about__bento {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .about__card {
+        padding: 1.25rem;
+    }
+
+    .about__card-title {
+        font-size: 1rem;
+    }
+
+    .about__card-text {
+        font-size: 0.8rem;
+    }
+
+    /* Footer mobile */
+    .footer {
+        padding: 2rem 0.75rem;
+    }
+
+    .footer__title {
+        font-size: 0.9rem;
+    }
+
+    .footer__link {
+        font-size: 0.8rem;
+    }
+
+    /* Ticker mobile */
+    .ticker-item {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .ticker-change {
+        font-size: 0.7rem;
+    }
+
+    /* Notifications mobile */
+    .notifications {
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.5rem;
+    }
+
+    .notification {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    /* Touch-friendly improvements */
+    .btn,
+    .nav__link,
+    .movers__row,
+    .crypto-row,
+    .footer__link {
+        min-height: 44px;
+    }
+
+    .btn-favorite {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Better touch targets */
+    .tab {
+        padding: 0.65rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .tabs {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    /* Chart mobile */
+    .chart-wrapper {
+        height: 220px;
+        border-radius: 16px;
+    }
+
+    /* TV Layout mobile */
+    .tv-header {
+        padding: 0.75rem;
+    }
+
+    .tv-symbol {
+        font-size: 1rem;
+    }
+
+    .tv-price {
+        font-size: 1.1rem;
+    }
+
+    /* Watchlist mobile */
+    .tv-watchlist-item {
+        padding: 0.6rem 0.75rem;
+    }
+
+    .tv-watchlist-name {
+        font-size: 0.8rem;
+    }
+
+    .tv-watchlist-price {
+        font-size: 0.85rem;
+    }
+
+    /* Sortable headers mobile */
+    .crypto-table__th.sortable {
+        font-size: 0.7rem;
+    }
+
+    /* Main content padding for 2-row header */
+    .main {
+        padding: 8.5rem 0.5rem 1rem;
+    }
+
+    /* Section titles mobile */
+    .section__title {
+        font-size: 1.25rem;
+        padding: 0 0.75rem;
+    }
+
+    .section__subtitle {
+        font-size: 0.85rem;
+        padding: 0 0.75rem;
+    }
+
+    /* Burger menu mobile */
+    .header__burger {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header__burger span {
+        width: 18px;
+        height: 2px;
+    }
+
+    /* Smooth scrolling for mobile */
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+
+    /* Better form elements on mobile */
+    input, select, button {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    /* Tables horizontal scroll */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .crypto-table {
+        min-width: 500px;
+    }
 }
 
 /* Auth Modal */
