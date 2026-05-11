@@ -240,6 +240,93 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .portfolio-hero {
+                padding: 60px 16px 40px;
+            }
+
+            .portfolio-hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .portfolio-hero p {
+                font-size: 0.9rem;
+            }
+
+            .portfolio-grid,
+            .portfolio-grid-small {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .portfolio-card {
+                padding: 20px;
+            }
+
+            .portfolio-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .portfolio-actions {
+                flex-direction: column;
+            }
+
+            .portfolio-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .portfolio-form input,
+            .portfolio-form select {
+                font-size: 16px;
+                padding: 14px;
+            }
+
+            .portfolio-table th,
+            .portfolio-table td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            .portfolio-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-box {
+                padding: 16px;
+            }
+
+            .stat-box .value {
+                font-size: 1.25rem;
+            }
+
+            .header__container {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .logo__text {
+                font-size: 1.1rem;
+            }
+
+            .logo__badge {
+                display: none;
+            }
+
+            .btn--icon {
+                padding: 0.45rem;
+            }
+
+            .btn--user svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* Touch-friendly */
+            .btn, .nav__link, .portfolio-form input, .portfolio-form select, .portfolio-table tr {
+                min-height: 44px;
+            }
+        }
+
         /* Header Actions */
         .header__actions {
             display: flex;
